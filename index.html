@@ -32,6 +32,9 @@
   <!-- Tricolor Bar -->
   <div class="tricolor-bar-animated"></div>
 
+  <!-- Drawer Backdrop -->
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
   <!-- Top Navigation -->
   <nav class="top-nav" role="navigation" aria-label="Main navigation">
     <div class="nav-inner">
@@ -45,6 +48,18 @@
       </button>
 
       <div class="nav-links-wrapper">
+        <!-- Drawer Header: Profile / Sign In -->
+        <div class="mobile-drawer-header" id="mobile-drawer-header">
+          <div class="drawer-top-bar">
+            <div class="drawer-brand">
+              <div class="nav-logo-icon">🗳️</div>
+              <span>VoteGuide AI</span>
+            </div>
+            <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Close menu">✕</button>
+          </div>
+          <div id="mobile-auth-container"></div>
+        </div>
+
         <div class="nav-links">
           <!-- Primary Tool Links -->
           <a href="#/" class="nav-link active"><span class="nav-link-icon">🏠</span> Home</a>
@@ -86,6 +101,11 @@
               <a href="#/booth-finder" class="nav-dropdown-item" role="menuitem"><span class="nav-dropdown-item-icon">📍</span><div><strong>Booth Finder</strong><span class="nav-dropdown-item-desc">Find your polling station</span></div></a>
             </div>
           </div>
+        </div>
+
+        <!-- Drawer Footer: Logout -->
+        <div class="mobile-drawer-footer" id="mobile-drawer-footer">
+          <div id="mobile-logout-container"></div>
         </div>
       </div>
 

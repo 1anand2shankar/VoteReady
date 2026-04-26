@@ -41,8 +41,10 @@ export class Router {
     // Close mobile menu
     const wrapper = document.querySelector('.nav-links-wrapper');
     const toggle = document.querySelector('.nav-toggle');
+    const backdrop = document.getElementById('drawer-backdrop');
     if (wrapper) wrapper.classList.remove('open');
     if (toggle) toggle.classList.remove('open');
+    if (backdrop) backdrop.classList.remove('open');
 
     // Execute route handler
     if (this.routes[hash]) {

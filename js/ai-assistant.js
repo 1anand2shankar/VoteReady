@@ -4,15 +4,16 @@
 
 import { formatAIResponse } from './utils.js';
 
-const GEMINI_API_KEY = 'AIzaSyDFNijZl1Sjh3gmL7Y7Pfcu2FFrOPFBMLM';
+// IMPORTANT: Replace this with your newly generated API key.
+// Ensure this key is strictly restricted in Google Cloud Console using HTTP Referrers!
+const GEMINI_API_KEY = 'AIzaSyAIqhb57jdvONiid-f6wObTDQOTKl8-Me4';
 
 // Model fallback list - tries each until one succeeds
-// Models verified via ListModels API as of April 2026
 const MODELS = [
-  'gemini-2.0-flash-lite',
+  'gemini-2.5-flash',
   'gemini-2.0-flash',
   'gemini-2.5-flash-lite',
-  'gemini-2.5-flash',
+  'gemini-2.0-flash-lite',
 ];
 
 function getGeminiUrl(model) {
@@ -60,7 +61,7 @@ async function callGemini(body) {
       lastError = err.message;
     }
   }
-  throw new Error(lastError || 'All models failed');
+  throw new Error(lastError || 'All models failed. Please try again later.');
 }
 
 export async function askGemini(question) {

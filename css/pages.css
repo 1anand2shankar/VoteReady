@@ -789,23 +789,25 @@
 /* ── Responsive Page Overrides ── */
 @media (max-width: 1024px) {
   .hero h1 { font-size: var(--text-4xl); }
-  .hero-stats { grid-template-columns: repeat(3, 1fr); }
+  .hero-stats { grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
   .chat-layout { grid-template-columns: 1fr; }
   .chat-right-col { display: none; }
   .evm-body { grid-template-columns: 1fr; }
   .evm-ballot { border-right: none; border-bottom: 2px solid var(--gray-300); }
   .translate-grid { grid-template-columns: 1fr; }
   .translate-swap { padding: 0; }
-  .why-vote-grid { grid-template-columns: 1fr; }
+  .why-vote-grid { grid-template-columns: repeat(2, 1fr); }
   .booth-finder-form { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 640px) {
   .hero { min-height: 80vh; padding: var(--space-12) 0; }
   .hero h1 { font-size: var(--text-3xl); }
-  .hero-stats { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
-  .hero-buttons { flex-direction: column; align-items: center; }
+  .hero-stats { grid-template-columns: 1fr; gap: var(--space-3); }
+  .hero-buttons { flex-direction: column; align-items: stretch; }
+  .hero-buttons .btn { width: 100%; }
   .booth-finder-form { grid-template-columns: 1fr; }
+  .why-vote-grid { grid-template-columns: 1fr; }
   .quiz-card { padding: var(--space-5); }
   .chat-hero-title { font-size: var(--text-3xl); }
   .chat-avatar-inner { width: 64px; height: 64px; font-size: 28px; }

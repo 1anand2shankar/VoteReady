@@ -91,13 +91,22 @@ export function initChat() {
   async function sendMessage(text) {
     if (!text.trim()) return;
     input.value = '';
-    messages.innerHTML += `<div class="chat-bubble chat-bubble-user"><div class="chat-bubble-avatar">👤</div><div class="chat-bubble-content">${sanitize(text)}</div></div>`;
-    messages.innerHTML += `<div class="chat-bubble chat-bubble-ai" id="ai-typing"><div class="chat-bubble-avatar">🤖</div><div class="chat-bubble-content"><div class="spinner spinner-sm" style="margin:4px auto"></div></div></div>`;
+    messages.insertAdjacentHTML('beforeend', `<div class="chat-bubble chat-bubble-user"><div class="chat-bubble-avatar">👤</div><div class="chat-bubble-content">${sanitize(text)}</div></div>`);
+    
+    // Use a unique ID for each typing indicator so rapid messages don't conflict
+    const typingId = 'ai-typing-' + Date.now();
+    messages.insertAdjacentHTML('beforeend', `<div class="chat-bubble chat-bubble-ai" id="${typingId}"><div class="chat-bubble-avatar">🤖</div><div class="chat-bubble-content"><div class="spinner spinner-sm" style="margin:4px auto"></div></div></div>`);
     messages.scrollTop = messages.scrollHeight;
 
     const reply = await askGemini(text);
-    const typing = document.getElementById('ai-typing');
-    if (typing) typing.outerHTML = `<div class="chat-bubble chat-bubble-ai"><div class="chat-bubble-avatar">🤖</div><div class="chat-bubble-content">${formatAIResponse(reply)}</div></div>`;
+    const typing = document.getElementById(typingId);
+    
+    if (typing) {
+      typing.outerHTML = `<div class="chat-bubble chat-bubble-ai"><div class="chat-bubble-avatar">🤖</div><div class="chat-bubble-content">${formatAIResponse(reply)}</div></div>`;
+    } else {
+      // Fallback just in case the typing element was lost
+      messages.insertAdjacentHTML('beforeend', `<div class="chat-bubble chat-bubble-ai"><div class="chat-bubble-avatar">🤖</div><div class="chat-bubble-content">${formatAIResponse(reply)}</div></div>`);
+    }
     messages.scrollTop = messages.scrollHeight;
 
     chatQuestionCount++;

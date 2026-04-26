@@ -95,10 +95,34 @@ router.register('/evm-demo', () => loadPage('./pages-info.js', 'renderEVMDemo', 
 router.register('/badges', () => loadPage('./pages-info.js', 'renderBadgesPage'));
 router.register('/profile', () => loadPage('./auth.js', 'renderProfile', 'initProfile'));
 
+// Mobile drawer helpers
+function closeDrawer() {
+  document.querySelector('.nav-toggle')?.classList.remove('open');
+  document.querySelector('.nav-links-wrapper')?.classList.remove('open');
+  document.getElementById('drawer-backdrop')?.classList.remove('open');
+}
+
 // Mobile nav toggle
 document.querySelector('.nav-toggle')?.addEventListener('click', function () {
-  this.classList.toggle('open');
-  document.querySelector('.nav-links-wrapper')?.classList.toggle('open');
+  const isOpen = this.classList.contains('open');
+  if (isOpen) {
+    closeDrawer();
+  } else {
+    this.classList.add('open');
+    document.querySelector('.nav-links-wrapper')?.classList.add('open');
+    document.getElementById('drawer-backdrop')?.classList.add('open');
+  }
+});
+
+// Close drawer on backdrop click
+document.getElementById('drawer-backdrop')?.addEventListener('click', closeDrawer);
+
+// Close drawer on close button click
+document.getElementById('drawer-close-btn')?.addEventListener('click', closeDrawer);
+
+// Close drawer when any nav link inside the drawer is clicked
+document.querySelectorAll('.nav-links-wrapper .nav-link').forEach(link => {
+  link.addEventListener('click', closeDrawer);
 });
 
 // Dropdown toggle logic
@@ -118,8 +142,14 @@ document.querySelectorAll('.nav-dropdown-trigger').forEach(trigger => {
   });
 });
 
-// Close dropdowns on click outside
+// Close dropdowns on click outside (but NOT when inside the drawer)
 document.addEventListener('click', (e) => {
+  const wrapper = document.querySelector('.nav-links-wrapper');
+  const isDrawerOpen = wrapper?.classList.contains('open');
+
+  // If drawer is open, only close dropdowns if click is OUTSIDE the drawer
+  if (isDrawerOpen && wrapper?.contains(e.target)) return;
+
   if (!e.target.closest('.nav-dropdown')) {
     document.querySelectorAll('.nav-dropdown.open').forEach(d => {
       d.classList.remove('open');
@@ -131,6 +161,7 @@ document.addEventListener('click', (e) => {
 // Close dropdowns on Escape key
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
+    closeDrawer();
     document.querySelectorAll('.nav-dropdown.open').forEach(d => {
       d.classList.remove('open');
       d.querySelector('.nav-dropdown-trigger')?.setAttribute('aria-expanded', 'false');
@@ -138,13 +169,14 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Close dropdown when a dropdown item is clicked (navigating)
+// Close drawer (and dropdown) when a dropdown item is clicked (navigating)
 document.querySelectorAll('.nav-dropdown-item').forEach(item => {
   item.addEventListener('click', () => {
     document.querySelectorAll('.nav-dropdown.open').forEach(d => {
       d.classList.remove('open');
       d.querySelector('.nav-dropdown-trigger')?.setAttribute('aria-expanded', 'false');
     });
+    closeDrawer();
   });
 });
 

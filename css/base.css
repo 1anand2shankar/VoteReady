@@ -263,7 +263,7 @@ input, textarea, select {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 9999;
+  z-index: 299;
   height: 4px;
   background: linear-gradient(90deg, #FF9933, #FFFFFF, #138808, #FF9933);
   background-size: 300% 100%;
