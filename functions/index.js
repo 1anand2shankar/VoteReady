@@ -39,7 +39,11 @@ const cors = require("cors")({ origin: true });
 
 // ⚠️ We use the API key directly here for the hackathon/demo. 
 // In production, this should ideally be in Firebase Secret Manager or config.
-const GEMINI_API_KEY = "AIzaSyDFNijZl1Sjh3gmL7Y7Pfcu2FFrOPFBMLM";
+const API_KEYS = [
+  "AIzaSyBC3YKGA-p41UxeIlb4XvQCwFP1DxGF2C8", // Primary
+  "AIzaSyAfufF-7dVKFFYfjrgk92tm4om2uL3Wm88"  // Backup
+];
+let currentKeyIndex = 0;
 
 exports.askGemini = functions.https.onRequest((req, res) => {
   // Wrap with CORS middleware to allow frontend to access
@@ -50,31 +54,51 @@ exports.askGemini = functions.https.onRequest((req, res) => {
     }
 
     try {
-      // Expecting { contents: [...] } matching Gemini API format or { prompt: "..." }
-      // To maintain compatibility with existing ai-assistant.js payload
       const body = req.body;
 
-      // Ensure we have a payload to send
       if (!body) {
         return res.status(400).json({ error: "Missing request body" });
       }
 
-      // Default model mapping matching frontend options
       const model = "gemini-2.5-flash"; 
-      
-      const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`,
-        body,
-        {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      );
+      let response;
+      let success = false;
+      let lastError;
 
-      // Return the direct response data back to the frontend
-      // which ai-assistant.js expects
-      res.json(response.data);
+      // Try available keys
+      for (let i = 0; i < API_KEYS.length; i++) {
+        try {
+          response = await axios.post(
+            `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${API_KEYS[currentKeyIndex]}`,
+            body,
+            {
+              headers: { "Content-Type": "application/json" }
+            }
+          );
+          
+          success = true;
+          break; // Request succeeded, break the retry loop
+          
+        } catch (error) {
+          lastError = error;
+          
+          // If Quota Exceeded (429), rotate key and retry
+          if (error.response && error.response.status === 429) {
+            console.warn(`Key index ${currentKeyIndex} hit 429 limit. Switching to backup key.`);
+            currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
+            continue;
+          }
+          
+          // For other errors, break out
+          break;
+        }
+      }
+
+      if (success) {
+        res.json(response.data);
+      } else {
+        throw lastError; // Throw the last captured error to the main catch block
+      }
 
     } catch (error) {
       console.error("Gemini API Error:", error.response ? error.response.data : error.message);

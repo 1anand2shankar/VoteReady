@@ -6,7 +6,11 @@ import { formatAIResponse } from './utils.js';
 
 // IMPORTANT: Replace this with your newly generated API key.
 // Ensure this key is strictly restricted in Google Cloud Console using HTTP Referrers!
-const GEMINI_API_KEY = 'AIzaSyAIqhb57jdvONiid-f6wObTDQOTKl8-Me4';
+const API_KEYS = [
+  'AIzaSyBC3YKGA-p41UxeIlb4XvQCwFP1DxGF2C8', // Primary
+  'AIzaSyAfufF-7dVKFFYfjrgk92tm4om2uL3Wm88'  // Backup
+];
+let currentKeyIndex = 0;
 
 // Model fallback list - tries each until one succeeds
 const MODELS = [
@@ -17,7 +21,7 @@ const MODELS = [
 ];
 
 function getGeminiUrl(model) {
-  return `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
+  return `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${API_KEYS[currentKeyIndex]}`;
 }
 
 const SYSTEM_PROMPT = `You are VoteGuide AI — India's official election education assistant. You MUST follow these rules strictly:
@@ -37,31 +41,53 @@ let chatHistory = [];
 
 async function callGemini(body) {
   let lastError = null;
+  
   for (const model of MODELS) {
-    try {
-      const res = await fetch(getGeminiUrl(model), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
+    let keyTriedCount = 0;
+    
+    // Try available keys for this model
+    while (keyTriedCount < API_KEYS.length) {
+      try {
+        const res = await fetch(getGeminiUrl(model), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
 
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        console.warn(`Model ${model} failed:`, res.status, errData?.error?.message || '');
-        lastError = errData?.error?.message || `HTTP ${res.status}`;
-        continue;
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          console.warn(`Model ${model} failed with key index ${currentKeyIndex}:`, res.status, errData?.error?.message || '');
+          lastError = errData?.error?.message || `HTTP ${res.status}`;
+          
+          // If Quota Exceeded (429), switch to the next backup key and retry the same model
+          if (res.status === 429) {
+            currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
+            keyTriedCount++;
+            continue; 
+          }
+          
+          // For other errors (e.g., 400 Bad Request), break out and try the next model
+          break;
+        }
+
+        const data = await res.json();
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (text) return text;
+        
+        lastError = 'Empty response from API';
+        break; // Break key loop on empty response
+        
+      } catch (err) {
+        console.warn(`Model ${model} network error:`, err.message);
+        lastError = err.message;
+        break; // Network error, try next model
       }
-
-      const data = await res.json();
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (text) return text;
-      lastError = 'Empty response from API';
-    } catch (err) {
-      console.warn(`Model ${model} network error:`, err.message);
-      lastError = err.message;
     }
+    
+    // If we get here and lastError isn't a 429, it means the model failed fundamentally, loop to next model.
   }
-  throw new Error(lastError || 'All models failed. Please try again later.');
+  
+  throw new Error(lastError || 'All models and fallback keys failed. Please try again later.');
 }
 
 export async function askGemini(question) {
