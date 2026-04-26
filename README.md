@@ -64,6 +64,45 @@ What makes VoteGuide AI stand out technically and experientially?
 
 VoteGuide AI operates on a modern, decoupled serverless architecture:
 
+```mermaid
+graph TD
+    %% User Layer
+    U((Citizen User)) -->|Interacts via Browser| Frontend
+    
+    %% Frontend Layer
+    subgraph "Frontend Layer (Client-Side SPA)"
+        UI[Dynamic UI Components<br>HTML5, CSS Variables]
+        ThreeJS[Immersive Visuals<br>Three.js WebGL]
+        Router{Vanilla JS Router<br>Hash-based navigation}
+        
+        UI --- Router
+        UI --- ThreeJS
+    end
+    
+    %% Services & Backend
+    Frontend -->|OAuth 2.0 Sign-In| FirebaseAuth[Firebase Authentication]
+    Router -->|Dynamically Injects| LocalData[(Modular Page Assets)]
+    Frontend -->|Secure POST Request| CloudFunction
+    
+    %% Backend Layer
+    subgraph "Backend Layer (Serverless)"
+        CloudFunction[Firebase Cloud Function<br>Node.js API Proxy]
+    end
+    
+    %% External API Layer
+    CloudFunction -->|REST API Call| GeminiAPI((Google Gemini AI API))
+    
+    %% Styling
+    classDef primary fill:#1a2744,stroke:#ff9933,stroke-width:2px,color:#fff;
+    classDef secondary fill:#0a1628,stroke:#5a82b0,stroke-width:1px,color:#fff;
+    classDef external fill:#138808,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef user fill:#e07a00,stroke:#fff,stroke-width:2px,color:#fff;
+    
+    class UI,Router,ThreeJS,CloudFunction,LocalData primary;
+    class FirebaseAuth,GeminiAPI external;
+    class U user;
+```
+
 1. **Frontend Layer:** Native HTML5, CSS3 (with extensive CSS Variables for theme management), and ES6 Modules. 
 2. **State & Routing:** A custom JavaScript Engine intercepts URL hash changes (`#/route`) and dynamically injects HTML payloads into the DOM. This ensures instant page transitions.
 3. **Authentication:** Firebase Auth handles Google OAuth Sign-In. State listeners globally update the UI (navbars, drawers) to reflect user sessions.
