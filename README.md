@@ -26,9 +26,10 @@
   
   1. [🛑 The Problem](#-the-problem)
   2. [💡 Our Solution](#-our-solution)
-  3. [🛠️ Tech Stack](#-tech-stack)
-  4. [📋 Initial Requirements](#-initial-installation-requirements)
-  5. [🚀 How to Run](#-how-to-run-the-project-after-unzipping)
+  3. [🎯 Project Overview](#-project-overview)
+  4. [🛠️ Tech Stack](#-tech-stack)
+  5. [📋 Initial Requirements](#-initial-installation-requirements)
+  6. [🚀 How to Run](#-how-to-run-the-project-after-unzipping)
 </details>
 
 ---
@@ -68,6 +69,36 @@
   | **🌐 Multi-lingual Support** | Built-in Google Translate integration for accessibility across various Indian regional languages. |
   | **🌗 Dynamic UI** | A seamless, modern UI with dynamic Dark/Light theme switching for a comfortable reading experience. |
   
+</details>
+
+---
+
+## 🎯 Project Overview
+
+<details open>
+  <summary><b>Vertical, Approach, Logic & Assumptions (Click to collapse)</b></summary>
+  <br>
+
+  ### 🏛️ Chosen Vertical
+  **Civic Technology & Election Education**  
+  We selected this vertical to address the crucial need for electoral literacy in the world's largest democracy. By leveraging modern web technologies, we aim to transform complex bureaucratic information into accessible, engaging, and actionable knowledge for every Indian citizen.
+
+  ### 🧠 Approach and Logic
+  Our approach prioritizes **accessibility, speed, and user experience**:
+  *   **Single Page Application (SPA) Architecture:** We built a custom Vanilla JavaScript router to handle navigation without page reloads, ensuring a fluid, app-like experience without the overhead of heavy frameworks.
+  *   **Progressive Disclosure:** Complex topics (like the Parliament or EVM functionality) are broken down into bite-sized, interactive components (accordions, quizzes, and step-by-step guides) to prevent cognitive overload.
+  *   **Mobile-First Design:** Knowing that the vast majority of India's user base accesses the web via smartphones, the UI features a robust mobile drawer navigation, tactile touch targets, and fluid grid systems that adapt flawlessly from mobile screens to desktop displays.
+
+  ### ⚙️ How the Solution Works
+  1.  **Modular Frontend:** The application loads core structural elements (`index.html`) once. Page-specific content is dynamically injected into the main container by our router pulling from modular JavaScript files.
+  2.  **State Management & Theming:** A centralized theme controller handles user preferences (Light/Dark mode) using CSS variables, ensuring immediate, flicker-free visual updates across the platform.
+  3.  **Authentication & Cloud Integration:** Firebase Authentication is seamlessly integrated to handle secure user sessions (Google Sign-In), updating the UI dynamically (e.g., swapping the "Sign In" button with the user's profile avatar across both desktop and mobile layouts).
+
+  ### 📌 Assumptions Made
+  *   **Educational Scope:** The platform is strictly educational and apolitical. It does not replace official ECI portals but acts as a comprehensive guide directing users to them.
+  *   **Modern Browser Support:** The application assumes the user is on a modern browser that supports CSS Grid, Flexbox, CSS Variables, and ES6 Modules. Heavy legacy polyfills were omitted to keep the platform exceptionally lightweight and fast.
+  *   **Internet Connectivity:** Core features like the Google Translate widget, Firebase Auth, and 3D background animations assume an active internet connection.
+
 </details>
 
 ---
