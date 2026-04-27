@@ -50,7 +50,22 @@ export class Router {
     if (this.routes[hash]) {
       this.routes[hash]();
     } else {
-      this.routes['/']?.();
+      // 404 Not Found Fallback
+      const appEl = document.getElementById('app');
+      if (appEl) {
+        appEl.innerHTML = `
+          <section class="page-section" style="min-height: 70vh; display: flex; align-items: center; justify-content: center; text-align: center;">
+            <div class="container">
+              <div style="font-size: 80px; margin-bottom: 20px;">🕵️‍♂️</div>
+              <h1 style="font-size: 3rem; color: var(--navy-800); margin-bottom: 16px;">404 - Page Not Found</h1>
+              <p style="color: var(--gray-600); font-size: 1.2rem; max-width: 500px; margin: 0 auto 32px;">
+                The election booth you're looking for seems to have been relocated. Let's get you back on track.
+              </p>
+              <a href="#/" class="btn btn-primary btn-lg">Return to Home 🏠</a>
+            </div>
+          </section>`;
+        window.scrollTo(0, 0);
+      }
     }
   }
 

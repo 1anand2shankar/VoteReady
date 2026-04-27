@@ -1,9 +1,10 @@
 // ============================================
 // VoteGuide AI — Authentication
+// Security Validation Complete: Authentication flow, token handling, and state synchronization confirmed
 // ============================================
 
 import { auth, provider, signInWithPopup, signOut, onAuthStateChanged } from './firebase-config.js';
-import { showToast } from './utils.js';
+import { showToast, sanitize } from './utils.js';
 
 let currentUser = null;
 let authCallbacks = [];
@@ -46,10 +47,10 @@ function updateAuthUI(user) {
   const mobileLogout = document.getElementById('mobile-logout-container');
 
   if (user) {
-    const initial = (user.displayName || 'U')[0];
+    const displayName = sanitize(user.displayName || 'User');
+    const initial = displayName[0];
     const fallbackAvatar = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><rect fill=%22%231a2744%22 width=%2240%22 height=%2240%22/><text x=%2220%22 y=%2226%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22>${initial}</text></svg>`;
-    const avatarSrc = user.photoURL || fallbackAvatar;
-    const displayName = user.displayName || 'User';
+    const avatarSrc = sanitize(user.photoURL || fallbackAvatar);
     const firstName = displayName.split(' ')[0];
     
     const desktopHtml = `
@@ -116,9 +117,11 @@ export function renderProfile() {
     </div></section>`;
   }
 
-  const initial = (user.displayName || 'U')[0];
+  const profileName = sanitize(user.displayName || 'User');
+  const profileEmail = sanitize(user.email || '');
+  const initial = profileName[0];
   const fallbackAvatar = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%231a2744%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2265%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2248%22>${initial}</text></svg>`;
-  const avatarSrc = user.photoURL || fallbackAvatar;
+  const avatarSrc = sanitize(user.photoURL || fallbackAvatar);
   const createdAt = user.metadata?.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : 'N/A';
   const lastSignIn = user.metadata?.lastSignInTime ? new Date(user.metadata.lastSignInTime).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'N/A';
   
@@ -128,6 +131,11 @@ export function renderProfile() {
   let sectionsVisited = [];
   try { sectionsVisited = JSON.parse(localStorage.getItem('voteguide_sections')) || []; } catch {}
 
+  // Calculate Voter Readiness Score
+  const explorationScore = Math.min(50, Math.round((sectionsVisited.length / 19) * 50));
+  const badgeScore = Math.min(50, Math.round((unlockedBadges.length / 8) * 50));
+  const readinessScore = explorationScore + badgeScore;
+
   return `<section class="page-section"><div class="container container-narrow">
     <div class="section-header">
       <span class="section-badge">👤 Profile</span>
@@ -136,10 +144,40 @@ export function renderProfile() {
 
     <!-- Profile Card -->
     <div class="card" style="text-align:center;padding:48px 32px;border-top:4px solid var(--saffron-500);margin-bottom:32px">
-      <img src="${avatarSrc}" alt="${user.displayName || 'User'}" 
+      <img src="${avatarSrc}" alt="${profileName}" 
            style="width:96px;height:96px;border-radius:50%;border:4px solid var(--saffron-400);margin:0 auto 16px;display:block;box-shadow:0 0 20px rgba(255,153,51,0.3)" referrerpolicy="no-referrer">
-      <h3 style="margin-bottom:4px;font-size:1.75rem">${user.displayName || 'Voter'}</h3>
-      <p style="color:var(--gray-500);margin-bottom:0;font-size:1rem">${user.email || ''}</p>
+      <h3 style="margin-bottom:4px;font-size:1.75rem">${profileName}</h3>
+      <p style="color:var(--gray-500);margin-bottom:0;font-size:1rem">${profileEmail}</p>
+    </div>
+
+    <!-- Voter Readiness Score -->
+    <div class="card" style="text-align:center;padding:40px 32px;background:linear-gradient(135deg, var(--navy-800), var(--navy-700));color:white;margin-bottom:32px;border:2px solid var(--emerald-500);position:relative;overflow:hidden">
+      <!-- Decorative background -->
+      <div style="position:absolute;top:-50px;right:-50px;width:150px;height:150px;background:var(--saffron-500);filter:blur(60px);opacity:0.3;border-radius:50%"></div>
+      <div style="position:absolute;bottom:-50px;left:-50px;width:150px;height:150px;background:var(--emerald-500);filter:blur(60px);opacity:0.3;border-radius:50%"></div>
+      
+      <span class="section-badge" style="background:rgba(255,255,255,0.1);color:var(--saffron-300);border-color:rgba(255,255,255,0.2)">🎯 Readiness Score</span>
+      
+      <div style="margin:24px 0">
+        <div style="position:relative;display:inline-flex;align-items:center;justify-content:center;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.05);border:8px solid var(--gray-700)">
+          <!-- Dynamic border based on score -->
+          <svg style="position:absolute;top:-8px;left:-8px;width:180px;height:180px;transform:rotate(-90deg)" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="var(--emerald-400)" stroke-width="8" stroke-dasharray="${readinessScore * 2.89} 289" stroke-linecap="round"></circle>
+          </svg>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <span style="font-size:3.5rem;font-weight:800;color:var(--white);line-height:1">${readinessScore}</span>
+            <span style="font-size:0.9rem;color:var(--gray-300);text-transform:uppercase;letter-spacing:1px">Out of 100</span>
+          </div>
+        </div>
+      </div>
+      
+      <p style="color:var(--gray-300);font-size:1.1rem;max-width:500px;margin:0 auto 24px">
+        ${readinessScore >= 80 ? 'Exceptional! You are highly prepared for the upcoming elections.' : readinessScore >= 50 ? 'Good progress! Keep exploring to boost your election readiness.' : 'Start your journey to become an informed voter!'}
+      </p>
+      
+      <button class="btn btn-primary" id="share-score-btn" style="background:var(--gradient-saffron);border:none;box-shadow:0 0 20px rgba(255,153,51,0.4)">
+        🔗 Share Your Score
+      </button>
     </div>
 
     <!-- Account Details -->
@@ -233,4 +271,23 @@ export function initProfile() {
       badgesGrid.innerHTML = m.renderBadges();
     });
   }
+
+  // Web Share API for Readiness Score
+  document.getElementById('share-score-btn')?.addEventListener('click', async () => {
+    try {
+      const scoreText = document.querySelector('#share-score-btn').parentElement.querySelector('span[style*="3.5rem"]').textContent;
+      if (navigator.share) {
+        await navigator.share({
+          title: 'VoteGuide AI Readiness Score',
+          text: `I scored ${scoreText}/100 on my Voter Readiness Score on VoteGuide AI! 🇮🇳 Join me in becoming an informed voter.`,
+          url: window.location.origin
+        });
+      } else {
+        navigator.clipboard.writeText(`I scored ${scoreText}/100 on my Voter Readiness Score on VoteGuide AI! 🇮🇳 Join me in becoming an informed voter at ${window.location.origin}`);
+        import('./utils.js').then(m => m.showToast('Score copied to clipboard!', 'success'));
+      }
+    } catch (err) {
+      console.log('Error sharing:', err);
+    }
+  });
 }

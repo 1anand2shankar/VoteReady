@@ -572,3 +572,107 @@
 [data-theme="dark"] .data-table th {
   color: #ffffff !important;
 }
+
+/* ── API Status Card Dark Mode ── */
+[data-theme="dark"] .api-status-card {
+  background: #0f1a2c !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .api-status-card:hover {
+  border-color: rgba(255, 153, 51, 0.2) !important;
+}
+
+[data-theme="dark"] .api-status-header {
+  background: linear-gradient(135deg, rgba(255,153,51,0.06) 0%, rgba(19,136,8,0.06) 100%);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .api-status-title {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] .api-status-subtitle {
+  color: #8a9bba !important;
+}
+
+[data-theme="dark"] .api-status-live-badge {
+  background: rgba(19,136,8,0.15);
+  border-color: rgba(19,136,8,0.3);
+  color: var(--emerald-300);
+}
+
+[data-theme="dark"] .api-key-card {
+  background: #111b2b !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-theme="dark"] .api-key-card:hover {
+  border-color: rgba(255, 153, 51, 0.25) !important;
+}
+
+[data-theme="dark"] .api-key-label {
+  color: #e8edf5 !important;
+}
+
+[data-theme="dark"] .api-key-meter {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .api-key-stats {
+  color: #8a9bba;
+}
+
+[data-theme="dark"] .api-key-stats strong {
+  color: #e8edf5;
+}
+
+[data-theme="dark"] .api-status-meta {
+  background: #0a1222;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .api-meta-icon {
+  background: #111b2b;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .api-meta-label {
+  color: #8a9bba !important;
+}
+
+[data-theme="dark"] .api-meta-value {
+  color: #e8edf5 !important;
+}
+
+[data-theme="dark"] .api-meta-enabled {
+  color: var(--emerald-300) !important;
+}
+
+[data-theme="dark"] .api-status-footer {
+  border-color: rgba(255, 255, 255, 0.06);
+  color: #6b7fa0;
+}
+
+[data-theme="dark"] .api-status-badge {
+  color: inherit;
+}
+
+[data-theme="dark"] .api-status-active {
+  background: rgba(19,136,8,0.15);
+  border-color: rgba(19,136,8,0.3);
+  color: var(--emerald-300);
+}
+
+[data-theme="dark"] .api-status-limited {
+  background: rgba(255,153,51,0.12);
+  border-color: rgba(255,153,51,0.25);
+  color: var(--saffron-300);
+}
+
+[data-theme="dark"] .api-status-exhausted {
+  background: rgba(220,38,38,0.12);
+  border-color: rgba(220,38,38,0.2);
+  color: #fca5a5;
+}
+

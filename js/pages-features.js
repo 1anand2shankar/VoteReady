@@ -1,11 +1,42 @@
 // VoteGuide AI — Page Renderers Part 2 (AI Chat, Text Analyzer, Translate, Election Dates)
-import { askGemini, analyzeText, translateText, clearChatHistory } from './ai-assistant.js';
+import { askGemini, analyzeText, translateText, clearChatHistory, getAPIUsageStats } from './ai-assistant.js';
 import { createCalendarUrl } from './calendar.js';
 import { electionDates } from './data.js';
 import { unlockBadge, trackSection } from './badges.js';
 import { formatAIResponse, sanitize } from './utils.js';
 
 let chatQuestionCount = 0;
+
+/// ── API Status Card (3-Level) ──
+function renderAPIStatusCard() {
+  const s = getAPIUsageStats();
+  function badge(st) {
+    const m = { active:'<span class="api-status-badge api-status-active">● Active</span>', standby:'<span class="api-status-badge" style="background:rgba(100,116,139,0.15);color:#64748b">◉ Standby</span>', limited:'<span class="api-status-badge api-status-limited">◐ Limited</span>', exhausted:'<span class="api-status-badge api-status-exhausted">○ Exhausted</span>', failed:'<span class="api-status-badge api-status-exhausted">✕ Failed</span>', enabled:'<span class="api-status-badge api-status-active">● Enabled</span>' };
+    return m[st] || m.active;
+  }
+  function ft(t) { if (!t) return '—'; try { return new Date(t).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true}); } catch { return '—'; } }
+  return `
+    <div class="api-status-card">
+      <div class="api-status-header">
+        <div class="api-status-header-left"><div class="api-status-icon">⚡</div><div><h3 class="api-status-title">AI Provider Status</h3><p class="api-status-subtitle">Mistral → Gemini → Knowledge Base</p></div></div>
+        <div class="api-status-live-badge"><span class="api-live-dot"></span> Live</div>
+      </div>
+      <div class="api-status-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="api-key-card"><div class="api-key-card-header"><span class="api-key-label">🟠 Mistral <small style="opacity:.6">(Primary)</small></span>${badge(s.mistral.status)}</div><div class="api-key-meter"><div class="api-key-meter-fill" style="width:${s.mistral.requests>0?Math.max(10,100-s.mistral.failures*20):100}%"></div></div><div class="api-key-stats"><span>Requests: <strong>${s.mistral.requests}</strong></span><span>Failures: <strong>${s.mistral.failures}</strong></span></div></div>
+        <div class="api-key-card"><div class="api-key-card-header"><span class="api-key-label">🔵 Gemini <small style="opacity:.6">(Backup)</small></span>${badge(s.gemini.status)}</div><div class="api-key-meter"><div class="api-key-meter-fill api-key-meter-fill-alt" style="width:${Math.min(100,(s.gemini.remaining/1500)*100)}%"></div></div><div class="api-key-stats"><span>Requests: <strong>${s.gemini.requests}</strong></span><span>Remaining: <strong>${s.gemini.remaining.toLocaleString()}</strong></span></div></div>
+        <div class="api-key-card"><div class="api-key-card-header"><span class="api-key-label">📚 Knowledge Base <small style="opacity:.6">(Failsafe)</small></span>${badge(s.kb.status)}</div><div class="api-key-meter"><div class="api-key-meter-fill" style="width:100%;background:linear-gradient(90deg,var(--emerald-400),var(--emerald-600))"></div></div><div class="api-key-stats"><span>Used: <strong>${s.kb.used} times</strong></span><span>18 topics</span></div></div>
+      </div>
+      <div class="api-status-meta">
+        <div class="api-meta-item"><span class="api-meta-icon">✅</span><div><span class="api-meta-label">Last Provider</span><span class="api-meta-value">${s.lastProvider||'No requests yet'}</span></div></div>
+        <div class="api-meta-item"><span class="api-meta-icon">🕐</span><div><span class="api-meta-label">Last Request</span><span class="api-meta-value">${ft(s.lastTime)}</span></div></div>
+        <div class="api-meta-item"><span class="api-meta-icon">📊</span><div><span class="api-meta-label">Total Today</span><span class="api-meta-value">${s.totalRequests}</span></div></div>
+        <div class="api-meta-item"><span class="api-meta-icon">🔀</span><div><span class="api-meta-label">Fallback Switches</span><span class="api-meta-value">${s.switchCount}</span></div></div>
+        <div class="api-meta-item"><span class="api-meta-icon">🔄</span><div><span class="api-meta-label">Auto Recovery</span><span class="api-meta-value api-meta-enabled">Active</span></div></div>
+        <div class="api-meta-item"><span class="api-meta-icon">🛡️</span><div><span class="api-meta-label">3-Level Protection</span><span class="api-meta-value api-meta-enabled">Enabled</span></div></div>
+      </div>
+      <div class="api-status-footer"><span>🔒 API keys securely managed — never exposed</span><span>Gemini resets daily ~midnight PT</span></div>
+    </div>`;
+}
 
 export function renderAIAssistant() {
   trackSection('ai-assistant');
@@ -27,8 +58,8 @@ export function renderAIAssistant() {
             </div>
           </div>
 
-          <!-- Messages -->
-          <div class="chat-messages-area" id="chat-messages">
+          <!-- Accessibility: role='log' for screen readers, aria-live for dynamic updates -->
+          <div class="chat-messages-area" id="chat-messages" role="log" aria-live="polite" aria-label="Chat messages">
             <div class="chat-bubble chat-bubble-ai">
               <div class="chat-bubble-avatar">🤖</div>
               <div class="chat-bubble-content">🙏 Namaste! I'm VoteGuide AI, your election education assistant. Ask me anything about Indian elections, voter registration, EVMs, or the democratic process. I support <strong>English</strong> and <strong>Hindi</strong>!</div>
@@ -49,8 +80,8 @@ export function renderAIAssistant() {
 
           <!-- Input -->
           <div class="chat-input-bar">
-            <input type="text" class="chat-input-v2" id="chat-input" placeholder="Ask about elections, voting, registration..." autocomplete="off">
-            <button class="chat-send-v2" id="chat-send-btn">
+            <input type="text" class="chat-input-v2" id="chat-input" placeholder="Ask about elections, voting, registration..." autocomplete="off" aria-label="Type your election question">
+            <button class="chat-send-v2" id="chat-send-btn" aria-label="Send message">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
           </div>
@@ -78,8 +109,21 @@ export function renderAIAssistant() {
         </div>
 
       </div>
+
+      <!-- API Status & Usage Card -->
+      <div id="api-status-container" style="margin-top:var(--space-8)">
+        ${renderAPIStatusCard()}
+      </div>
+
     </div>
   </section>`;
+}
+
+function refreshAPIStatusCard() {
+  const container = document.getElementById('api-status-container');
+  if (container) {
+    container.innerHTML = renderAPIStatusCard();
+  }
 }
 
 export function initChat() {
@@ -90,6 +134,13 @@ export function initChat() {
 
   async function sendMessage(text) {
     if (!text.trim()) return;
+    
+    // Security: Input length validation to prevent large payload attacks
+    if (text.length > 500) {
+      alert("Please keep your question under 500 characters.");
+      return;
+    }
+    
     input.value = '';
     messages.insertAdjacentHTML('beforeend', `<div class="chat-bubble chat-bubble-user"><div class="chat-bubble-avatar">👤</div><div class="chat-bubble-content">${sanitize(text)}</div></div>`);
     
@@ -108,6 +159,9 @@ export function initChat() {
       messages.insertAdjacentHTML('beforeend', `<div class="chat-bubble chat-bubble-ai"><div class="chat-bubble-avatar">🤖</div><div class="chat-bubble-content">${formatAIResponse(reply)}</div></div>`);
     }
     messages.scrollTop = messages.scrollHeight;
+
+    // Refresh the API status card with updated stats
+    refreshAPIStatusCard();
 
     chatQuestionCount++;
     if (chatQuestionCount >= 5) unlockBadge('ai_chat');
@@ -174,7 +228,7 @@ export function initTranslate() {
     result.innerHTML = '<div style="display:flex;align-items:center;gap:8px"><div class="spinner spinner-sm"></div> Translating...</div>';
     const translated = await translateText(text, lang);
     lastTranslation = translated;
-    result.innerHTML = `<div class="card card-emerald-accent" style="font-size:1.05rem;line-height:1.8">${translated}</div>`;
+    result.innerHTML = `<div class="card card-emerald-accent" style="font-size:1.05rem;line-height:1.8">${formatAIResponse(translated)}</div>`;
     unlockBadge('translator');
   });
   document.getElementById('tts-btn')?.addEventListener('click', () => {

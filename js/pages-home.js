@@ -24,6 +24,21 @@ export function renderHome() {
         <div class="hero-stat-card reveal reveal-delay-4"><div class="hero-stat-icon">📞</div><div class="hero-stat-num" data-counter="1950">0</div><div class="hero-stat-label">Voter Helpline Number</div></div>
         <div class="hero-stat-card reveal reveal-delay-5"><div class="hero-stat-icon">🎂</div><div class="hero-stat-num" data-counter="18">0</div><div class="hero-stat-label">Years Minimum Voting Age</div></div>
       </div>
+      
+      <!-- Election Countdown Widget -->
+      <div class="countdown-widget reveal" style="margin-top: 40px; background: rgba(10, 22, 40, 0.8); border: 2px solid var(--saffron-500); padding: 24px; border-radius: 16px; display: inline-block; box-shadow: 0 0 20px rgba(255,153,51,0.2); backdrop-filter: blur(10px);">
+        <h4 style="color: var(--saffron-400); margin-bottom: 16px; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px;">⏳ Next Major Election (Estimated)</h4>
+        <div id="election-countdown" style="display: flex; gap: 20px; justify-content: center; text-align: center;">
+          <div><div id="cd-days" style="font-size: 2.5rem; font-weight: 800; color: #fff; font-family: monospace;">--</div><div style="font-size: 0.8rem; color: var(--gray-400);">DAYS</div></div>
+          <div style="font-size: 2.5rem; color: var(--saffron-500);">:</div>
+          <div><div id="cd-hours" style="font-size: 2.5rem; font-weight: 800; color: #fff; font-family: monospace;">--</div><div style="font-size: 0.8rem; color: var(--gray-400);">HRS</div></div>
+          <div style="font-size: 2.5rem; color: var(--saffron-500);">:</div>
+          <div><div id="cd-mins" style="font-size: 2.5rem; font-weight: 800; color: #fff; font-family: monospace;">--</div><div style="font-size: 0.8rem; color: var(--gray-400);">MIN</div></div>
+          <div style="font-size: 2.5rem; color: var(--saffron-500);">:</div>
+          <div><div id="cd-secs" style="font-size: 2.5rem; font-weight: 800; color: #fff; font-family: monospace;">--</div><div style="font-size: 0.8rem; color: var(--gray-400);">SEC</div></div>
+        </div>
+      </div>
+      
     </div>
   </section>
   <section class="why-vote page-section">
@@ -36,6 +51,47 @@ export function renderHome() {
       </div>
     </div>
   </section>`;
+}
+
+export function initHome() {
+  // Initialize Election Countdown (Target: Next big state/national election approx date)
+  // Hardcoding a future date for demonstration (e.g., Delhi Assembly 2025 or generic next year)
+  const targetDate = new Date();
+  targetDate.setFullYear(targetDate.getFullYear() + 1); // 1 year from now
+  targetDate.setMonth(1); // Feb
+  targetDate.setDate(15); 
+  targetDate.setHours(8, 0, 0, 0);
+
+  const daysEl = document.getElementById('cd-days');
+  const hoursEl = document.getElementById('cd-hours');
+  const minsEl = document.getElementById('cd-mins');
+  const secsEl = document.getElementById('cd-secs');
+  let countdownInterval;
+
+  function updateCountdown() {
+    if (!daysEl) { clearInterval(countdownInterval); return; } // Navigated away
+    const now = new Date().getTime();
+    const distance = targetDate.getTime() - now;
+
+    if (distance < 0) {
+      clearInterval(countdownInterval);
+      document.getElementById('election-countdown').innerHTML = '<div style="font-size:1.5rem;color:var(--emerald-400);font-weight:bold;">ELECTION DAY!</div>';
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    daysEl.textContent = days.toString().padStart(2, '0');
+    hoursEl.textContent = hours.toString().padStart(2, '0');
+    minsEl.textContent = minutes.toString().padStart(2, '0');
+    secsEl.textContent = seconds.toString().padStart(2, '0');
+  }
+
+  updateCountdown();
+  countdownInterval = setInterval(updateCountdown, 1000);
 }
 
 export function renderHowToVote() {

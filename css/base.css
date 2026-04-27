@@ -12,6 +12,32 @@
   box-sizing: border-box;
 }
 
+/* Accessibility: WCAG 2.1 AA keyboard focus indicators */
+*:focus-visible {
+  outline: 2px solid var(--saffron-400);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Accessibility: Enhanced skip-to-content link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  padding: 8px 24px;
+  background: var(--saffron-400);
+  color: #000;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 8px;
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
@@ -268,4 +294,25 @@ input, textarea, select {
   background: linear-gradient(90deg, #FF9933, #FFFFFF, #138808, #FF9933);
   background-size: 300% 100%;
   animation: tricolorShift 4s ease-in-out infinite;
+}
+
+/* ── Accessibility: Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* ── Accessibility: High Contrast ── */
+@media (prefers-contrast: high) {
+  :root {
+    --shadow-card: 0 0 0 2px var(--navy-800);
+    --shadow-card-hover: 0 0 0 3px var(--navy-800);
+  }
+  .btn, button, a { text-decoration: underline; }
+  :focus-visible { outline-width: 3px; }
 }

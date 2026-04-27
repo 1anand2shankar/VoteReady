@@ -2,6 +2,21 @@
 // VoteGuide AI — Utilities
 // ============================================
 
+// ── Security: HTML Sanitization (XSS Prevention) ──
+export function sanitize(str) {
+  if (typeof str !== 'string') return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+export function escapeHtml(unsafe) {
+  return sanitize(unsafe);
+}
+
 // Toast notification system
 export function showToast(message, type = 'info') {
   let container = document.getElementById('toast-container');
@@ -91,20 +106,51 @@ export function formatDate(dateStr) {
   return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-// Sanitize HTML to prevent XSS
-export function sanitize(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-// Simple markdown-like formatting for AI responses
+// Format AI responses — convert markdown to clean HTML
 export function formatAIResponse(text) {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/\n- /g, '<br>• ')
-    .replace(/\n(\d+)\. /g, '<br>$1. ')
-    .replace(/\n/g, '<br>');
+  if (!text) return '';
+  let s = text;
+  
+  // Headers: ### Title → styled heading
+  s = s.replace(/^#{1,6}\s+(.+)$/gm, '<strong style="display:block;font-size:1.1rem;margin:14px 0 8px;color:var(--saffron-400)">$1</strong>');
+  
+  // Bold: **text** → <strong>
+  s = s.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  
+  // Italic: *text* → <em> (safe because bold was replaced above)
+  s = s.replace(/\*([^\*]+)\*/g, '<em>$1</em>');
+  
+  // Markdown links: [text](url) → <a>
+  s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" style="color:var(--saffron-400)">$1</a>');
+  
+  // Horizontal rule: ---
+  s = s.replace(/^---$/gm, '<hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:12px 0">');
+  
+  // Table rows
+  s = s.replace(/^\|(.+)\|$/gm, (m, inner) => {
+    const cells = inner.split('|').map(c => c.trim()).filter(Boolean);
+    if (cells.every(c => /^[-:]+$/.test(c))) return '';
+    return '<div style="display:flex;gap:12px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.08)">' + cells.map(c => '<span style="flex:1">' + c + '</span>').join('') + '</div>';
+  });
+  
+  // Bullet lists
+  s = s.replace(/^[\-\*] (.+)$/gm, '<div style="padding:2px 0 2px 16px">• $1</div>');
+  
+  // Numbered lists
+  s = s.replace(/^(\d+)\. (.+)$/gm, '<div style="padding:2px 0 2px 16px">$1. $2</div>');
+  
+  // Double newlines → paragraph
+  s = s.replace(/\n\n/g, '</p><p style="margin:8px 0">');
+  
+  // Single newlines → br
+  s = s.replace(/\n/g, '<br>');
+  
+  // Final brute-force cleanup of any leftover markdown symbols
+  s = s.replace(/<br>#{1,6}\s*/g, '<br>');
+  s = s.replace(/^#{1,6}\s*/g, '');
+  s = s.replace(/\*\*/g, ''); // strip any unmatched double asterisks
+  s = s.replace(/(^|\s)\*(?=\s|$)/g, ' '); // strip stray single asterisks used as bullets
+  s = s.replace(/#/g, ''); // strip any remaining hash symbols
+  
+  return s;
 }
