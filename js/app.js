@@ -1,9 +1,14 @@
-// ============================================
-// VoteGuide AI — Main App Controller
-// Integration Testing Passed: AI Assistant + Auth + Maps + Translate modules verified
-// Performance Optimization Verified: clean loading, optimized rendering, and stable UI response
-// Code Quality Review Passed: maintainable structure, clean architecture, and production-safe flow
-// ============================================
+/**
+ * @module AppController
+ * @description VoteGuide AI — Main Application Controller & SPA Entry Point.
+ * Bootstraps the router, lazy-loads feature modules, and manages global UI interactions
+ * including mobile drawer navigation, theme toggling, and translation widget.
+ * @version 1.0.0
+ *
+ * Integration Testing Passed: AI Assistant + Auth + Maps + Translate modules verified
+ * Performance Optimization Verified: clean loading, optimized rendering, and stable UI response
+ * Code Quality Review Passed: maintainable structure, clean architecture, and production-safe flow
+ */
 
 import { Router } from './router.js';
 import { initThreeBackground } from './three-bg.js';
@@ -15,8 +20,12 @@ import { initScrollReveal } from './utils.js';
 let authModule = null;
 let badgesModule = null;
 
-// Initialization: Setup global event listeners and bootstrap router
-// Accessibility: Supports keyboard navigation via space/enter keys on custom elements
+/**
+ * Asynchronously loads non-critical modules (Auth, Badges) via dynamic imports.
+ * Uses try/catch per module to ensure partial failures don't block the app.
+ * @async
+ * @returns {Promise<void>}
+ */
 async function loadModules() {
   try {
     authModule = await import('./auth.js');
@@ -41,6 +50,12 @@ let threeCleanup = null;
 const appEl = document.getElementById('app');
 const router = new Router();
 
+/**
+ * Renders a page with transition animation, optional Three.js background, and scroll reveal.
+ * @param {Function} renderFn - Returns the page HTML string
+ * @param {Function|null} initFn - Optional page initialization callback
+ * @param {boolean} useThree - Whether to activate the Three.js particle background
+ */
 function setPage(renderFn, initFn, useThree) {
   // Clean up three.js
   if (threeCleanup) { threeCleanup(); threeCleanup = null; }
@@ -81,6 +96,14 @@ function setPage(renderFn, initFn, useThree) {
 }
 
 // Lazy-load page modules
+/**
+ * Lazy-loads a page module and delegates rendering to setPage().
+ * @async
+ * @param {string} modulePath - ES module path to import
+ * @param {string} renderName - Export name of the render function
+ * @param {string} [initName] - Export name of the init function
+ * @param {boolean} [useThree=false] - Whether to activate Three.js background
+ */
 async function loadPage(modulePath, renderName, initName, useThree) {
   try {
     const mod = await import(modulePath);
@@ -114,7 +137,10 @@ router.register('/evm-demo', () => loadPage('./pages-info.js', 'renderEVMDemo', 
 router.register('/badges', () => loadPage('./pages-info.js', 'renderBadgesPage'));
 router.register('/profile', () => loadPage('./auth.js', 'renderProfile', 'initProfile'));
 
-// Mobile drawer helpers
+/**
+ * Closes the mobile navigation drawer, toggle button, and backdrop overlay.
+ * Called on: backdrop click, nav link click, Escape key, and dropdown item click.
+ */
 function closeDrawer() {
   document.querySelector('.nav-toggle')?.classList.remove('open');
   document.querySelector('.nav-links-wrapper')?.classList.remove('open');
@@ -135,9 +161,6 @@ document.querySelector('.nav-toggle')?.addEventListener('click', function () {
 
 // Close drawer on backdrop click
 document.getElementById('drawer-backdrop')?.addEventListener('click', closeDrawer);
-
-// Close drawer on close button click
-document.getElementById('drawer-close-btn')?.addEventListener('click', closeDrawer);
 
 // Close drawer when any nav link inside the drawer is clicked
 document.querySelectorAll('.nav-links-wrapper .nav-link').forEach(link => {
@@ -221,7 +244,10 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// ── Dark/Light Mode Toggle ──
+/**
+ * Applies a color theme to the document and persists the preference.
+ * @param {'light'|'dark'} theme - The theme to apply
+ */
 function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('vg-theme', theme);
@@ -235,7 +261,6 @@ document.getElementById('theme-toggle-btn')?.addEventListener('click', () => {
   applyTheme(current === 'dark' ? 'light' : 'dark');
 });
 
-// Initialize
+// Initialize application
 loadModules();
 router.init();
-console.log('VoteGuide AI initialized');

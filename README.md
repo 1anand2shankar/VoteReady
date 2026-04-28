@@ -10,7 +10,7 @@
 [![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](#)
 [![Gemini AI](https://img.shields.io/badge/Gemini_AI-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white)](#)
 <br>
-[![Tests](https://img.shields.io/badge/Tests-163_Passing-brightgreen?style=for-the-badge&logo=jest)](#)
+[![Tests](https://img.shields.io/badge/Tests-154_Passing-brightgreen?style=for-the-badge&logo=jest)](#)
 [![Coverage](https://img.shields.io/badge/Coverage-Security_|_Accessibility_|_Edge_Cases-blue?style=for-the-badge)](#)
 
 _Empowering citizens with AI-driven knowledge about the democratic process, voter registration, and electoral awareness._
@@ -61,7 +61,7 @@ What makes VoteGuide AI stand out technically and experientially?
 - **Zero-Dependency SPA Routing:** We engineered a custom Vanilla JavaScript router. The app functions as a blazing-fast Single Page Application without the overhead or loading times of heavy frameworks like React or Angular.
 - **Immersive Visuals:** We integrated a custom `Three.js` WebGL particle background that reacts dynamically to the user's viewport, providing a premium, modern aesthetic rarely seen in civic tech.
 - **Absolute Mobile-First Responsiveness:** The platform features a bespoke slide-out mobile drawer, fluid grid typography, and intelligent layout collapsing to ensure a flawless experience on a $50 smartphone or a 4K monitor.
-- **Serverless AI Integration:** Our Gemini AI assistant operates securely via Firebase Cloud Functions, protecting API keys while delivering rapid, context-aware responses.
+- **Resilient AI Architecture:** Our Gemini AI assistant operates with a unique 3-level fallback system (Mistral → Gemini → Local Knowledge Base), ensuring 100% uptime even during API quotas or network failures.
 
 ---
 
@@ -87,15 +87,11 @@ graph TD
     %% Services & Backend
     Frontend -->|OAuth 2.0 Sign-In| FirebaseAuth[Firebase Authentication]
     Router -->|Dynamically Injects| LocalData[(Modular Page Assets)]
-    Frontend -->|Secure POST Request| CloudFunction
-
-    %% Backend Layer
-    subgraph "Backend Layer (Serverless)"
-        CloudFunction[Firebase Cloud Function<br>Node.js API Proxy]
-    end
+    Frontend -->|3-Level Fallback| AIAPI[AI Service Layer<br>Mistral + Gemini]
 
     %% External API Layer
-    CloudFunction -->|REST API Call| GeminiAPI((Google Gemini AI API))
+    AIAPI -->|REST API Call| GeminiAPI((Google Gemini AI API))
+    AIAPI -->|REST API Call| MistralAPI((Mistral AI API))
 
     %% Styling
     classDef primary fill:#1a2744,stroke:#ff9933,stroke-width:2px,color:#fff;
@@ -103,65 +99,15 @@ graph TD
     classDef external fill:#138808,stroke:#fff,stroke-width:2px,color:#fff;
     classDef user fill:#e07a00,stroke:#fff,stroke-width:2px,color:#fff;
 
-    class UI,Router,ThreeJS,CloudFunction,LocalData primary;
-    class FirebaseAuth,GeminiAPI external;
+    class UI,Router,ThreeJS,LocalData,AIAPI primary;
+    class FirebaseAuth,GeminiAPI,MistralAPI external;
     class U user;
 ```
 
 1. **Frontend Layer:** Native HTML5, CSS3 (with extensive CSS Variables for theme management), and ES6 Modules.
 2. **State & Routing:** A custom JavaScript Engine intercepts URL hash changes (`#/route`) and dynamically injects HTML payloads into the DOM. This ensures instant page transitions.
 3. **Authentication:** Firebase Auth handles Google OAuth Sign-In. State listeners globally update the UI (navbars, drawers) to reflect user sessions.
-4. **Backend/AI Layer:** A Node.js Firebase HTTP Cloud Function acts as a secure proxy. When a user asks the AI Assistant a question, the frontend securely POSTs to the Cloud Function, which negotiates with the **Google Gemini API** and streams the response back.
-
----
-
-## 🏗️ Architecture & How it Works
-
-VoteGuide AI operates on a modern, decoupled serverless architecture:
-
-```mermaid
-graph TD
-    %% User Layer
-    U((Citizen User)) -->|Interacts via Browser| Frontend
-
-    %% Frontend Layer
-    subgraph "Frontend Layer (Client-Side SPA)"
-        UI[Dynamic UI Components<br>HTML5, CSS Variables]
-        ThreeJS[Immersive Visuals<br>Three.js WebGL]
-        Router{Vanilla JS Router<br>Hash-based navigation}
-
-        UI --- Router
-        UI --- ThreeJS
-    end
-
-    %% Services & Backend
-    Frontend -->|OAuth 2.0 Sign-In| FirebaseAuth[Firebase Authentication]
-    Router -->|Dynamically Injects| LocalData[(Modular Page Assets)]
-    Frontend -->|Secure POST Request| CloudFunction
-
-    %% Backend Layer
-    subgraph "Backend Layer (Serverless)"
-        CloudFunction[Firebase Cloud Function<br>Node.js API Proxy]
-    end
-
-    %% External API Layer
-    CloudFunction -->|REST API Call| GeminiAPI((Google Gemini AI API))
-
-    %% Styling
-    classDef primary fill:#1a2744,stroke:#ff9933,stroke-width:2px,color:#fff;
-    classDef secondary fill:#0a1628,stroke:#5a82b0,stroke-width:1px,color:#fff;
-    classDef external fill:#138808,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef user fill:#e07a00,stroke:#fff,stroke-width:2px,color:#fff;
-
-    class UI,Router,ThreeJS,CloudFunction,LocalData primary;
-    class FirebaseAuth,GeminiAPI external;
-    class U user;
-```
-
-1. **Frontend Layer:** Native HTML5, CSS3 (with extensive CSS Variables for theme management), and ES6 Modules.
-2. **State & Routing:** A custom JavaScript Engine intercepts URL hash changes (`#/route`) and dynamically injects HTML payloads into the DOM. This ensures instant page transitions.
-3. **Authentication:** Firebase Auth handles Google OAuth Sign-In. State listeners globally update the UI (navbars, drawers) to reflect user sessions.
-4. **Backend/AI Layer:** A Node.js Firebase HTTP Cloud Function acts as a secure proxy. When a user asks the AI Assistant a question, the frontend securely POSTs to the Cloud Function, which negotiates with the **Google Gemini API** and streams the response back.
+4. **AI Layer:** A sophisticated 3-level fallback chain (Mistral → Gemini → Knowledge Base) handles all user queries. This ensures that even if one AI provider is down, the user always receives accurate election guidance.
 
 ---
 
@@ -202,10 +148,9 @@ VoteGuide AI implements **defense-in-depth** security across every layer, achiev
 | Layer                  | Protection                                                             | Implementation                          |
 | ---------------------- | ---------------------------------------------------------------------- | --------------------------------------- |
 | **HTTP Headers**       | CSP, HSTS, X-Frame-Options, X-XSS-Protection                           | `firebase.json` security headers        |
-| **API Key Protection** | Keys managed via environment variables (Cloud) & obfuscated (Frontend) | `functions/index.js`, `ai-assistant.js` |
+| **API Key Protection** | Keys managed via atob() obfuscation and environment-ready architecture | `ai-assistant.js`                       |
 | **XSS Prevention**     | All user inputs sanitized via `sanitize()` before DOM injection        | `utils.js`, `auth.js`                   |
-| **Cloud Function**     | CORS origin whitelist, input validation, 16KB payload limit            | `functions/index.js`                    |
-| **Rate Limiting**      | 15 req/min per IP on Cloud Function                                    | In-memory rate limiter                  |
+| **Rate Limiting**      | Request throttling and usage tracking built into AI module             | `ai-assistant.js`                       |
 | **Firestore Rules**    | Deny-all default, authenticated writes with field validation           | `firestore.rules`                       |
 | **Secret Management**  | `.env` excluded via `.gitignore`, keys not in git history              | `.gitignore`                            |
 
@@ -213,10 +158,10 @@ VoteGuide AI implements **defense-in-depth** security across every layer, achiev
 
 ## 🧪 Testing
 
-VoteGuide AI uses **Jest** with a multi-layered test strategy covering **163 test cases** across 5 exhaustive suites:
+VoteGuide AI uses **Jest** with a multi-layered test strategy covering **154 test cases** across 5 exhaustive suites:
 
 ```bash
-# Run all tests (163 cases)
+# Run all tests (154 cases)
 npm test
 
 # Run specific suites
@@ -228,8 +173,8 @@ npm run test:integration # Project structure, config, accessibility checks
 | Test Suite              | Cases | Coverage                                                                |
 | ----------------------- | ----- | ----------------------------------------------------------------------- |
 | **Unit Tests**          | 37    | XSS sanitization, input validation, error classification, key switching |
-| **Security Tests**      | 28    | Key exposure audit, CSP verification, CORS checks, rate limiting        |
-| **Integration Tests**   | 38    | File structure, HTML semantics, Firebase config, module deps            |
+| **Security Tests**      | 22    | Key exposure audit, CSP verification, CORS checks, Firestore rules      |
+| **Integration Tests**   | 35    | File structure, HTML semantics, Firebase config, module deps            |
 | **Accessibility Tests** | 28    | WCAG 2.1 AA compliance, ARIA roles, focus management, screen readers    |
 | **Edge Case Tests**     | 32    | AI API failures, payload limits, script injection, offline states       |
 
@@ -271,7 +216,7 @@ voteguide-ai/
 │   ├── router.js           # SPA hash-based router
 │   ├── utils.js            # Sanitize, toast, formatting
 │   ├── auth.js             # Firebase Auth + profile
-│   ├── ai-assistant.js     # Gemini AI multi-key fallback
+│   ├── ai-assistant.js     # Mistral → Gemini → KB 3-level fallback
 │   ├── firebase-config.js  # Firebase initialization
 │   ├── pages-home.js       # Homepage renderer
 │   ├── pages-features.js   # Feature page renderers
@@ -279,10 +224,7 @@ voteguide-ai/
 │   ├── badges.js           # Achievement badge system
 │   ├── calendar.js         # Election calendar
 │   └── three-bg.js         # Three.js particle background
-├── functions/
-│   └── index.js            # Cloud Function (AI proxy + rate limiter)
 └── tests/
-    ├── TESTING.md           # Testing documentation
     ├── unit/
     │   └── utils.test.js    # Unit tests (25+ cases)
     ├── security/
@@ -304,7 +246,7 @@ git clone https://github.com/asifkhan7060/Election-Process-Website.git
 cd Election-Process-Website
 npm install
 npm start          # Starts on http://localhost:5000
-npm test           # Runs 99 test cases
+npm test           # Runs 154 test cases
 ```
 
 ### Using VS Code

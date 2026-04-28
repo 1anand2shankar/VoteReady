@@ -1,4 +1,10 @@
-// VoteGuide AI — Page Renderers Part 2 (AI Chat, Text Analyzer, Translate, Election Dates)
+/**
+ * @module PagesFeatures
+ * @description VoteGuide AI — Feature Page Renderers.
+ * Renders the AI Chat Assistant with API status dashboard, Election Text Analyzer,
+ * Multi-language Translator with text-to-speech, and Election Dates calendar.
+ * @version 1.0.0
+ */
 import { askGemini, analyzeText, translateText, clearChatHistory, getAPIUsageStats } from './ai-assistant.js';
 import { createCalendarUrl } from './calendar.js';
 import { electionDates } from './data.js';
@@ -91,8 +97,8 @@ export function renderAIAssistant() {
         <div class="chat-right-col">
           <div class="chat-sidebar-card">
             <h3 class="chat-sidebar-title">Quick Links</h3>
-            <a href="https://voters.eci.gov.in" target="_blank" class="chat-sidebar-link">📋 Voter Registration Portal</a>
-            <a href="https://eci.gov.in" target="_blank" class="chat-sidebar-link">🏛️ Election Commission of India</a>
+            <a href="https://voters.eci.gov.in" target="_blank" rel="noopener" class="chat-sidebar-link">📋 Voter Registration Portal</a>
+            <a href="https://eci.gov.in" target="_blank" rel="noopener" class="chat-sidebar-link">🏛️ Election Commission of India</a>
             <a href="#/booth-finder" class="chat-sidebar-link">📍 Find Your Booth</a>
             <a href="#/evm-demo" class="chat-sidebar-link">🗳️ EVM Demo</a>
             <a href="#/election-dates" class="chat-sidebar-link">📅 Election Dates</a>
@@ -103,7 +109,7 @@ export function renderAIAssistant() {
             <h3 class="chat-sidebar-title">Helplines</h3>
             <p class="chat-sidebar-info">📞 Voter Helpline: <strong style="color:var(--saffron-400)">1950</strong></p>
             <p class="chat-sidebar-info">📱 cVIGIL App: Report MCC violations</p>
-            <p class="chat-sidebar-info">🌐 NVSP: <a href="https://nvsp.in" target="_blank">nvsp.in</a></p>
+            <p class="chat-sidebar-info">🌐 NVSP: <a href="https://nvsp.in" target="_blank" rel="noopener">nvsp.in</a></p>
             <p class="chat-sidebar-info">📲 Voter Helpline App: iOS & Android</p>
           </div>
         </div>
@@ -255,7 +261,7 @@ export function renderElectionDates() {
         <h4 style="margin-bottom:8px">${d.title}</h4>
         <p style="font-size:0.9rem">${d.desc}</p>
         <p style="font-weight:600;color:var(--navy-700);margin-bottom:12px">📅 ${d.schedule}</p>
-        <a href="${createCalendarUrl(d.title, d.desc, d.date)}" target="_blank" class="btn btn-sm btn-outline">+ Add to Google Calendar</a>
+        <a href="${createCalendarUrl(d.title, d.desc, d.date)}" target="_blank" rel="noopener" class="btn btn-sm btn-outline">+ Add to Google Calendar</a>
       </div>`).join('')}
     </div>
   </div></section>`;

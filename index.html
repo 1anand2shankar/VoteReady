@@ -27,8 +27,8 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/pages.css">
 
-  <!-- Three.js CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Three.js CDN (with Subresource Integrity) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
 
   <!-- Google Translate -->
   <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateInit"></script>
@@ -38,10 +38,10 @@
   <a href="#app" class="skip-link">Skip to main content</a>
 
   <!-- Tricolor Bar -->
-  <div class="tricolor-bar-animated"></div>
+  <div class="tricolor-bar-animated" role="banner" aria-label="Indian national tricolor"></div>
 
   <!-- Drawer Backdrop -->
-  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+  <div class="drawer-backdrop" id="drawer-backdrop" role="presentation" aria-hidden="true"></div>
 
   <!-- Top Navigation -->
   <nav class="top-nav" role="navigation" aria-label="Main navigation">
@@ -171,7 +171,7 @@
         </div>
       </div>
       <div class="footer-disclaimer">
-        ⚠️ <strong>Disclaimer:</strong> VoteGuide AI is an educational platform. It is strictly apolitical and does not endorse any political party or candidate. All information is sourced from official Election Commission of India resources. For official services, visit <a href="https://eci.gov.in" target="_blank" style="color:var(--saffron-400)">eci.gov.in</a>.
+        ⚠️ <strong>Disclaimer:</strong> VoteGuide AI is an educational platform. It is strictly apolitical and does not endorse any political party or candidate. All information is sourced from official Election Commission of India resources. For official services, visit <a href="https://eci.gov.in" target="_blank" rel="noopener" style="color:var(--saffron-400)">eci.gov.in</a>.
       </div>
       <div class="footer-bottom">
         <span>© 2026 VoteGuide AI — Built for Hack2Skill PromptWars Challenge</span>

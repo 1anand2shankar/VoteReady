@@ -1,4 +1,10 @@
-// VoteGuide AI — Page Renderers Part 1 (Home, How to Vote, Registration, Quiz, ECI Map)
+/**
+ * @module PagesHome
+ * @description VoteGuide AI — Home & Core Page Renderers.
+ * Renders the homepage hero with countdown, How to Vote guide, Voter Registration
+ * steps, Quiz launcher, and ECI Map with polling booth finder.
+ * @version 1.0.0
+ */
 import { votingSteps, registrationSteps, quickFacts, officialLinks } from './data.js';
 import { unlockBadge, trackSection } from './badges.js';
 
@@ -102,7 +108,7 @@ export function renderHowToVote() {
       ${votingSteps.map((s, i) => `<div class="step-card reveal reveal-delay-${i % 3 + 1}">
         <div class="step-number">${i + 1}</div><span class="step-icon">${s.icon}</span>
         <h4>${s.title}</h4><p>${s.desc}</p>
-        ${s.link ? `<a href="${s.link}" target="_blank" class="step-link">Official Link →</a>` : ''}
+        ${s.link ? `<a href="${s.link}" target="_blank" rel="noopener" class="step-link">Official Link →</a>` : ''}
       </div>`).join('')}
     </div>
     <div style="text-align:center;margin-top:48px">
@@ -124,9 +130,9 @@ export function renderRegistration() {
     <div class="card" style="margin-top:48px;text-align:center">
       <h3 style="margin-bottom:16px">Official Registration Links</h3>
       <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
-        <a href="https://voters.eci.gov.in/" target="_blank" class="btn btn-primary">NVSP Portal</a>
-        <a href="https://electoralsearch.eci.gov.in/" target="_blank" class="btn btn-outline">Electoral Search</a>
-        <a href="https://affidavit.eci.gov.in/" target="_blank" class="btn btn-outline">Affidavits</a>
+        <a href="https://voters.eci.gov.in/" target="_blank" rel="noopener" class="btn btn-primary">NVSP Portal</a>
+        <a href="https://electoralsearch.eci.gov.in/" target="_blank" rel="noopener" class="btn btn-outline">Electoral Search</a>
+        <a href="https://affidavit.eci.gov.in/" target="_blank" rel="noopener" class="btn btn-outline">Affidavits</a>
       </div>
     </div>
     <div class="card" style="margin-top:32px">
@@ -215,7 +221,7 @@ export function renderECIMap() {
           <span style="font-size:22px">🗺️</span>
           <div><h4 class="eci-black-text" style="color:#ffffff;margin:0;font-size:1rem">Live Map Preview</h4><p class="eci-black-text" style="color:var(--gray-400);margin:0;font-size:0.8rem">ECI Headquarters — Nirvachan Sadan, New Delhi</p></div>
         </div>
-        <a href="https://www.google.com/maps/search/Nirvachan+Sadan+Election+Commission+of+India+New+Delhi" target="_blank" class="btn btn-primary" style="font-size:0.85rem;padding:8px 16px">Open Full Map ↗</a>
+        <a href="https://www.google.com/maps/search/Nirvachan+Sadan+Election+Commission+of+India+New+Delhi" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.85rem;padding:8px 16px">Open Full Map ↗</a>
       </div>
       <div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.7!2d77.2117!3d28.6225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd37b741d057%3A0xcdee88e47393c3f1!2sElection+Commission+of+India!5e0!3m2!1sen!2sin!4v1" allowfullscreen loading="lazy" style="height:350px;border:none;width:100%"></iframe></div>
     </div>
@@ -278,25 +284,25 @@ export function renderECIMap() {
     <h3 style="margin-bottom:4px;display:flex;align-items:center;gap:8px">🔗 Trusted Government Resources</h3>
     <p style="color:var(--gray-500);margin-bottom:20px;font-size:0.9rem">Official portals verified by the Election Commission of India</p>
     <div class="grid grid-4" style="margin-bottom:32px">
-      <a href="https://voters.eci.gov.in" target="_blank" class="card" style="text-decoration:none;text-align:center;border-top:3px solid var(--emerald-500);transition:transform .2s" onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform=''">
+      <a href="https://voters.eci.gov.in" target="_blank" rel="noopener" class="card" style="text-decoration:none;text-align:center;border-top:3px solid var(--emerald-500);transition:transform .2s" onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform='' text-decoration:none;text-align:center;border-top:3px solid var(--emerald-500);transition:transform .2s" onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform=''">
         <span style="display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:8px"><span class="eci-tag-badge" style="font-size:0.65rem;padding:2px 8px">✓ OFFICIAL</span></span>
         <span style="font-size:28px;display:block;margin-bottom:8px">🗳️</span>
         <h5 style="margin-bottom:4px">NVSP Portal</h5>
         <p style="font-size:0.75rem;color:var(--gray-500);margin:0;word-break:break-all">voters.eci.gov.in</p>
       </a>
-      <a href="https://electoralsearch.eci.gov.in" target="_blank" class="card" style="text-decoration:none;text-align:center;border-top:3px solid var(--emerald-500);transition:transform .2s" onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform=''">
+      <a href="https://electoralsearch.eci.gov.in" target="_blank" rel="noopener" class="card" style="text-decoration:none;text-align:center;border-top:3px solid var(--emerald-500);transition:transform .2s" onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform=''">
         <span style="display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:8px"><span style="background:var(--emerald-glow);color:var(--emerald-700);padding:2px 8px;border-radius:12px;font-size:0.65rem;font-weight:700">✓ OFFICIAL</span></span>
         <span style="font-size:28px;display:block;margin-bottom:8px">🔎</span>
         <h5 style="margin-bottom:4px">Electoral Search</h5>
         <p style="font-size:0.75rem;color:var(--gray-500);margin:0;word-break:break-all">electoralsearch.eci.gov.in</p>
       </a>
-      <a href="https://eci.gov.in" target="_blank" class="card" style="text-decoration:none;text-align:center;border-top:3px solid var(--emerald-500);transition:transform .2s" onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform=''">
+      <a href="https://eci.gov.in" target="_blank" rel="noopener" class="card" style="text-decoration:none;text-align:center;border-top:3px solid var(--emerald-500);transition:transform .2s" onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform=''">
         <span style="display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:8px"><span style="background:var(--emerald-glow);color:var(--emerald-700);padding:2px 8px;border-radius:12px;font-size:0.65rem;font-weight:700">✓ OFFICIAL</span></span>
         <span style="font-size:28px;display:block;margin-bottom:8px">🏛️</span>
         <h5 style="margin-bottom:4px">ECI Main Website</h5>
         <p style="font-size:0.75rem;color:var(--gray-500);margin:0;word-break:break-all">eci.gov.in</p>
       </a>
-      <a href="https://nvsp.in" target="_blank" class="card" style="text-decoration:none;text-align:center;border-top:3px solid var(--emerald-500);transition:transform .2s" onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform=''">
+      <a href="https://nvsp.in" target="_blank" rel="noopener" class="card" style="text-decoration:none;text-align:center;border-top:3px solid var(--emerald-500);transition:transform .2s" onmouseenter="this.style.transform='translateY(-3px)'" onmouseleave="this.style.transform=''">
         <span style="display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:8px"><span style="background:var(--emerald-glow);color:var(--emerald-700);padding:2px 8px;border-radius:12px;font-size:0.65rem;font-weight:700">✓ OFFICIAL</span></span>
         <span style="font-size:28px;display:block;margin-bottom:8px">📝</span>
         <h5 style="margin-bottom:4px">NVSP Registration</h5>
@@ -321,10 +327,10 @@ export function initECIMap() {
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:20px">✅</span><strong style="color:var(--emerald-700)">Results Found</strong></div>
         <p style="margin:0 0 8px;font-size:0.9rem">Showing polling booth locations for: <strong>${q}</strong></p>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
-          <a href="${mapsUrl}" target="_blank" class="btn btn-primary" style="font-size:0.85rem">📍 Open in Google Maps</a>
-          <a href="https://electoralsearch.eci.gov.in/" target="_blank" class="btn btn-outline" style="font-size:0.85rem">🔎 Verify on ECI Portal</a>
+          <a href="${mapsUrl}" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.85rem">📍 Open in Google Maps</a>
+          <a href="https://electoralsearch.eci.gov.in/" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:0.85rem">🔎 Verify on ECI Portal</a>
         </div>
-        <p style="font-size:0.8rem;color:var(--gray-500);margin:0">💡 <strong>Tip:</strong> For your exact booth allocation, search your name on <a href="https://electoralsearch.eci.gov.in/" target="_blank" style="color:var(--saffron-600)">electoralsearch.eci.gov.in</a></p>
+        <p style="font-size:0.8rem;color:var(--gray-500);margin:0">💡 <strong>Tip:</strong> For your exact booth allocation, search your name on <a href="https://electoralsearch.eci.gov.in/" target="_blank" rel="noopener" style="color:var(--saffron-600)">electoralsearch.eci.gov.in</a></p>
       </div>`;
   });
 
@@ -341,10 +347,10 @@ export function initECIMap() {
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:20px">📍</span><strong style="color:var(--saffron-700)">Location Detected</strong></div>
           <p style="margin:0 0 8px;font-size:0.9rem">Coordinates: ${latitude.toFixed(4)}°N, ${longitude.toFixed(4)}°E</p>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
-            <a href="${mapsUrl}" target="_blank" class="btn btn-primary" style="font-size:0.85rem">📍 Find Booths Near Me</a>
-            <a href="https://www.google.com/maps/search/election+office+near+me/@${latitude},${longitude},14z" target="_blank" class="btn btn-outline" style="font-size:0.85rem">🏢 Find Election Office</a>
+            <a href="${mapsUrl}" target="_blank" rel="noopener" class="btn btn-primary" style="font-size:0.85rem">📍 Find Booths Near Me</a>
+            <a href="https://www.google.com/maps/search/election+office+near+me/@${latitude},${longitude},14z" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:0.85rem">🏢 Find Election Office</a>
           </div>
-          <p style="font-size:0.8rem;color:var(--gray-500);margin:0">💡 For exact booth: check <a href="https://electoralsearch.eci.gov.in/" target="_blank" style="color:var(--saffron-600)">electoralsearch.eci.gov.in</a></p>
+          <p style="font-size:0.8rem;color:var(--gray-500);margin:0">💡 For exact booth: check <a href="https://electoralsearch.eci.gov.in/" target="_blank" rel="noopener" style="color:var(--saffron-600)">electoralsearch.eci.gov.in</a></p>
         </div>`;
     }, () => { result.innerHTML = '<p style="color:var(--error)">⚠️ Location access denied. Please enter your details manually.</p>'; });
   });

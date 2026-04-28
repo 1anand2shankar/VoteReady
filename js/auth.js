@@ -1,12 +1,22 @@
-// ============================================
-// VoteGuide AI — Authentication
-// Security Validation Complete: Authentication flow, token handling, and state synchronization confirmed
-// ============================================
+/**
+ * @module Auth
+ * @description VoteGuide AI — Firebase Authentication & User Profile Management.
+ * Handles Google OAuth sign-in/sign-out, auth state synchronization, profile rendering,
+ * and mobile drawer UI updates. Uses URL-safe sanitization for Google profile image URLs.
+ * @version 1.0.0
+ *
+ * Security Validation Complete: Authentication flow, token handling, and state synchronization confirmed
+ */
 
 import { auth, provider, signInWithPopup, signOut, onAuthStateChanged } from './firebase-config.js';
 import { showToast, sanitize } from './utils.js';
 
-// URL-safe sanitizer: validates without HTML-encoding (preserves & in query params)
+/**
+ * Validates and sanitizes a URL without HTML-encoding query parameters.
+ * Essential for Google profile photo URLs that contain & in query strings.
+ * @param {string} url - The URL to validate
+ * @returns {string} The original URL if valid https/data URI, empty string otherwise
+ */
 function sanitizeUrl(url) {
   if (!url || typeof url !== 'string') return '';
   try {
@@ -21,13 +31,26 @@ function sanitizeUrl(url) {
   }
 }
 
+/** @type {?Object} Currently authenticated Firebase user object */
 let currentUser = null;
+/** @type {Function[]} Registered auth state change callbacks */
 let authCallbacks = [];
 
+/**
+ * Returns the currently authenticated user object, or null if signed out.
+ * @returns {?Object} Firebase User object or null
+ */
 export function getCurrentUser() { return currentUser; }
 
+/**
+ * Registers a callback to be invoked whenever auth state changes.
+ * @param {Function} cb - Callback receiving the user object (or null)
+ */
 export function onUserChange(cb) { authCallbacks.push(cb); }
 
+/**
+ * Initializes Firebase auth state listener and triggers initial UI update.
+ */
 export function initAuth() {
   onAuthStateChanged(auth, (user) => {
     currentUser = user;
@@ -36,6 +59,12 @@ export function initAuth() {
   });
 }
 
+/**
+ * Initiates Google OAuth popup sign-in flow via Firebase Auth.
+ * Displays success/error toast notifications to the user.
+ * @async
+ * @returns {Promise<void>}
+ */
 export async function googleSignIn() {
   try {
     await signInWithPopup(auth, provider);

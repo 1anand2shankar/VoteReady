@@ -1,7 +1,16 @@
-// ============================================
-// VoteGuide AI — Three.js 3D Background
-// ============================================
+/**
+ * @module ThreeBackground
+ * @description VoteGuide AI — Three.js WebGL Particle Background.
+ * Creates an immersive 3D scene with Indian tricolor particles, democracy-themed
+ * wireframe shapes (Ashoka Chakra ring, unity sphere), and mouse-reactive camera.
+ * @version 1.0.0
+ */
 
+/**
+ * Initializes the Three.js 3D particle background on the homepage.
+ * @param {HTMLElement} canvasContainer - The DOM element to attach the renderer to
+ * @returns {?Function} Cleanup function to dispose renderer and cancel animation, or null
+ */
 export function initThreeBackground(canvasContainer) {
   if (!canvasContainer || !window.THREE) return null;
 

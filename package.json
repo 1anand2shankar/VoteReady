@@ -9,6 +9,8 @@
     "test:unit": "jest tests/unit/ --verbose",
     "test:security": "jest tests/security/ --verbose",
     "test:integration": "jest tests/integration/ --verbose",
+    "test:accessibility": "jest tests/accessibility/ --verbose",
+    "test:edge": "jest tests/edge-cases/ --verbose",
     "deploy": "firebase deploy"
   },
   "keywords": ["election", "voter", "ai", "gemini", "firebase", "civic-tech"],

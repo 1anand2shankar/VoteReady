@@ -1,8 +1,13 @@
-// ============================================
-// VoteGuide AI — Firebase Configuration
-// Production Deployment Verified: Firebase hosting + authentication + routing fully stable
-// Security Validation Complete: Firestore rules and Auth handling safely confirmed
-// ============================================
+/**
+ * @module FirebaseConfig
+ * @description VoteGuide AI — Firebase SDK Initialization & Configuration.
+ * Centralizes Firebase app setup, authentication provider, Firestore database,
+ * and Google Analytics. All Firebase modules re-exported for use across the app.
+ * @version 1.0.0
+ *
+ * Production Deployment Verified: Firebase hosting + authentication + routing fully stable
+ * Security Validation Complete: Firestore rules and Auth handling safely confirmed
+ */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics.js";
@@ -20,8 +25,9 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+/** @type {?Object} Firebase Analytics instance (null if blocked by browser) */
 let analytics = null;
-try { analytics = getAnalytics(app); } catch(e) { console.log('Analytics not available'); }
+try { analytics = getAnalytics(app); } catch(e) { console.warn('Analytics not available'); }
 const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();

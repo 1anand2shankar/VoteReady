@@ -1,4 +1,10 @@
-// VoteGuide AI — Page Renderers Part 3 (Parliament, States, President, Updates, First-Time Voter, Myths, Links, Booth Finder, EVM Demo, Badges)
+/**
+ * @module PagesInfo
+ * @description VoteGuide AI — Informational Page Renderers.
+ * Renders Parliament structure, States & UTs data table, President info, Election Updates,
+ * First-Time Voter guide, Myths vs Facts, Official Links, Booth Finder, EVM Demo, and Badges.
+ * @version 1.0.0
+ */
 import { statesData, mythsAndFacts, officialLinks, firstTimeVoterSteps, parliamentInfo, presidentInfo, updatesData, evmCandidates, badges as badgeDefs } from './data.js';
 import { unlockBadge, trackSection, renderBadges } from './badges.js';
 import { formatDate } from './utils.js';
@@ -147,7 +153,7 @@ export function renderOfficialLinks() {
   return `<section class="page-section"><div class="container">
     <div class="section-header"><span class="section-badge">🔗 Links</span><h2 class="section-title">Official Government Links</h2><p class="section-subtitle">Trusted and verified government resources for election information.</p></div>
     <div class="grid grid-4">
-      ${officialLinks.map(l => `<a href="${l.url}" target="_blank" class="card reveal" style="text-align:center;text-decoration:none">
+      ${officialLinks.map(l => `<a href="${l.url}" target="_blank" rel="noopener" class="card reveal" style="text-align:center;text-decoration:none">
         <span style="font-size:40px;display:block;margin-bottom:12px">${l.icon}</span>
         <h5 style="margin-bottom:4px">${l.name}</h5><p style="font-size:0.85rem;margin:0">${l.desc}</p>
       </a>`).join('')}
@@ -173,7 +179,7 @@ export function renderBoothFinder() {
     </div>
     <div class="card" style="margin-top:20px;text-align:center">
       <p style="margin-bottom:12px">For accurate booth information, use the official ECI search:</p>
-      <a href="https://electoralsearch.eci.gov.in/" target="_blank" class="btn btn-primary">Search on ECI Portal →</a>
+      <a href="https://electoralsearch.eci.gov.in/" target="_blank" rel="noopener" class="btn btn-primary">Search on ECI Portal →</a>
     </div>
   </div></section>`;
 }
@@ -191,7 +197,7 @@ export function initBoothFinder() {
     map.src = `https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
     result.innerHTML = `<div class="card card-emerald-accent" style="margin-top:12px">
       <p style="margin:0">📍 Showing map for: <strong>${displayQuery}</strong></p>
-      <p style="margin:4px 0 0;font-size:0.85rem;color:var(--gray-500)">For exact booth allocation, verify at <a href="https://electoralsearch.eci.gov.in/" target="_blank">electoralsearch.eci.gov.in</a></p>
+      <p style="margin:4px 0 0;font-size:0.85rem;color:var(--gray-500)">For exact booth allocation, verify at <a href="https://electoralsearch.eci.gov.in/" target="_blank" rel="noopener">electoralsearch.eci.gov.in</a></p>
     </div>`;
   });
 }

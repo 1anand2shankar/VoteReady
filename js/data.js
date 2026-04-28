@@ -1,6 +1,11 @@
-// ============================================
-// VoteGuide AI — Static Data
-// ============================================
+/**
+ * @module Data
+ * @description VoteGuide AI — Static Election Data Repository.
+ * Contains all structured datasets: state/UT electoral information, quiz questions,
+ * myths vs facts, voting steps, registration guides, election dates, official links,
+ * badge definitions, Parliament/President information, and EVM demo candidates.
+ * @version 1.0.0
+ */
 
 export const statesData = [
   { name: "Andhra Pradesh", capital: "Amaravati", type: "State", vidhanSabha: 175, lokSabha: 25, rajyaSabha: 11, region: "South" },

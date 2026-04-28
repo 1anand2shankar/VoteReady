@@ -123,41 +123,9 @@ describe('Firebase Security Configuration', () => {
   });
 });
 
-describe('Cloud Function Security', () => {
-  test('Cloud Function should restrict CORS origins', () => {
-    const content = fs.readFileSync(path.join(PROJECT_ROOT, 'functions/index.js'), 'utf8');
-    expect(content).not.toContain("origin: true");
-    expect(content).toContain('allowedOrigins');
-  });
-
-  test('Cloud Function should use Primary/Backup key pattern', () => {
-    const content = fs.readFileSync(path.join(PROJECT_ROOT, 'functions/index.js'), 'utf8');
-    expect(content).toContain('PRIMARY_KEY');
-    expect(content).toContain('BACKUP_KEY');
-  });
-
-  test('Cloud Function should implement rate limiting', () => {
-    const content = fs.readFileSync(path.join(PROJECT_ROOT, 'functions/index.js'), 'utf8');
-    expect(content).toContain('isRateLimited');
-    expect(content).toContain('RATE_WINDOW');
-  });
-
-  test('Cloud Function should validate request body', () => {
-    const content = fs.readFileSync(path.join(PROJECT_ROOT, 'functions/index.js'), 'utf8');
-    expect(content).toContain('validateBody');
-  });
-
-  test('Cloud Function should NOT log API keys', () => {
-    const content = fs.readFileSync(path.join(PROJECT_ROOT, 'functions/index.js'), 'utf8');
-    expect(content).not.toMatch(/console\.(log|info).*API_KEY/i);
-  });
-
-  test('Cloud Function should only allow POST method', () => {
-    const content = fs.readFileSync(path.join(PROJECT_ROOT, 'functions/index.js'), 'utf8');
-    expect(content).toContain('req.method !== "POST"');
-    expect(content).toContain('405');
-  });
-});
+// Note: Cloud Function tests removed — functions/ folder was not used by the frontend.
+// The frontend calls Gemini/Mistral APIs directly via ai-assistant.js with its own
+// 3-level fallback architecture. Security patterns documented in TESTING.md.
 
 describe('XSS Prevention', () => {
   test('auth.js should import sanitize function', () => {

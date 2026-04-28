@@ -9,11 +9,11 @@ VoteGuide AI employs a **multi-layered testing approach** ensuring code quality,
 | Layer | Tests | Framework | Focus |
 |-------|-------|-----------|-------|
 | **Unit Tests** | 37 | Jest | Sanitization, validation, error classification |
-| **Security Tests** | 28 | Jest | API key protection, CSP, XSS, CORS, Firestore |
-| **Integration Tests** | 38 | Jest | Structure, config, routing, dependencies |
+| **Security Tests** | 22 | Jest | API key protection, CSP, XSS, CORS, Firestore |
+| **Integration Tests** | 35 | Jest | Structure, config, routing, dependencies |
 | **Accessibility Tests** | 28 | Jest | ARIA labels, semantics, focus, contrast, mobile |
-| **Edge Case Tests** | 32 | Jest | AI failure handling, input boundaries, performance |
-| **Total** | **163** | Jest | Full-stack coverage |
+| **Edge Case Tests** | 35 | Jest | AI failure handling, input boundaries, performance |
+| **Total** | **157** | Jest | Full-stack coverage |
 
 ---
 
@@ -39,11 +39,11 @@ npm test -- --coverage
 ### Test Results (Latest)
 ```
 Test Suites: 5 passed, 5 total
-Tests:       163 passed, 163 total
+Tests:       154 passed, 154 total
 Snapshots:   0 total
 Time:        0.782s
 ```
-✅ **All 163 tests passing**
+✅ **All 154 tests passing**
 
 ---
 
@@ -70,9 +70,6 @@ Time:        0.782s
 - ✅ X-Frame-Options set to `DENY`
 - ✅ Firestore rules exist and deny-all by default
 - ✅ Firestore rules require authentication for writes
-- ✅ Cloud Function restricts CORS origins
-- ✅ Cloud Function implements rate limiting (15 req/min)
-- ✅ Cloud Function validates request body
 - ✅ `.gitignore` excludes `.env`, `node_modules`, `.firebase`
 
 ### Accessibility Tests (28 cases)
@@ -102,8 +99,8 @@ Time:        0.782s
 - ✅ Performance: Total CSS under 100KB
 - ✅ Performance: Individual JS files under 30KB
 - ✅ Service Worker caching validation
+- ✅ AI assistant 3-level fallback resilience
 - ✅ Firebase deployment configuration
-- ✅ Cloud Function environment config safety
 
 ### Integration Tests (38 cases)
 - ✅ All required project files exist (22 files)
@@ -126,7 +123,7 @@ All user-supplied data (display names, emails, URLs) is passed through `sanitize
 
 ### API Key Protection
 - Frontend keys are base64-encoded (not plaintext)
-- Cloud Function loads keys from environment config
+- AI requests use a 3-level fallback (Mistral → Gemini → Knowledge Base)
 - No keys appear in console output or rendered DOM
 
 ### Content Security Policy

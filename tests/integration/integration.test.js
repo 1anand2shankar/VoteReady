@@ -30,8 +30,6 @@ describe('Project Structure Integrity', () => {
     'css/layout.css',
     'css/components.css',
     'css/pages.css',
-    'functions/index.js',
-    'functions/package.json',
   ];
 
   test.each(requiredFiles)('should contain required file: %s', (file) => {
@@ -104,10 +102,7 @@ describe('Firebase Configuration', () => {
     expect(config.firestore.rules).toBe('firestore.rules');
   });
 
-  test('should have functions configuration', () => {
-    expect(config.functions).toBeDefined();
-    expect(config.functions.length).toBeGreaterThan(0);
-  });
+  // Note: functions config removed — Cloud Functions were not used by frontend
 
   test('should ignore sensitive files in hosting', () => {
     expect(config.hosting.ignore).toContain('**/node_modules/**');

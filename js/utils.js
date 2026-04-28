@@ -1,8 +1,17 @@
-// ============================================
-// VoteGuide AI — Utilities
-// ============================================
+/**
+ * @module Utils
+ * @description VoteGuide AI — Shared Utility Functions.
+ * Provides HTML sanitization (XSS prevention), toast notifications, scroll animations,
+ * page transitions, debouncing, date formatting, and AI response formatting.
+ * @version 1.0.0
+ */
 
-// ── Security: HTML Sanitization (XSS Prevention) ──
+/**
+ * Sanitizes a string by escaping all 5 dangerous HTML characters to prevent XSS attacks.
+ * Used for all user-supplied data (display names, emails, text content) before DOM injection.
+ * @param {string} str - The untrusted string to sanitize
+ * @returns {string} The HTML-escaped safe string, or empty string for non-string input
+ */
 export function sanitize(str) {
   if (typeof str !== 'string') return '';
   return str
@@ -13,11 +22,12 @@ export function sanitize(str) {
     .replace(/'/g, '&#039;');
 }
 
-export function escapeHtml(unsafe) {
-  return sanitize(unsafe);
-}
-
-// Toast notification system
+/**
+ * Displays a transient toast notification.
+ * Auto-creates the container element if it doesn't exist in the DOM.
+ * @param {string} message - The notification message to display
+ * @param {'success'|'error'|'warning'|'info'} [type='info'] - Toast severity level
+ */
 export function showToast(message, type = 'info') {
   let container = document.getElementById('toast-container');
   if (!container) {
@@ -34,7 +44,12 @@ export function showToast(message, type = 'info') {
   setTimeout(() => toast.remove(), 3000);
 }
 
-// Animate number counting up
+/**
+ * Animates a numeric counter from 0 to a target value with eased timing.
+ * @param {HTMLElement} el - The DOM element whose textContent will be updated
+ * @param {number} target - The target number to count up to
+ * @param {number} [duration=1500] - Animation duration in milliseconds
+ */
 export function animateCounter(el, target, duration = 1500) {
   const start = 0;
   const startTime = performance.now();
@@ -50,7 +65,12 @@ export function animateCounter(el, target, duration = 1500) {
   requestAnimationFrame(update);
 }
 
-// Intersection Observer for scroll reveal
+/**
+ * Initializes IntersectionObserver-based scroll reveal animations.
+ * Elements with the `.reveal` class get `.revealed` when they enter the viewport.
+ * Also triggers counter animations on elements with `data-counter` attributes.
+ * @returns {IntersectionObserver} The observer instance for cleanup
+ */
 export function initScrollReveal() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -74,7 +94,11 @@ export function initScrollReveal() {
   return observer;
 }
 
-// Smooth page transition
+/**
+ * Wraps a render function with a smooth fade-out/fade-in page transition.
+ * Scrolls to top and reinitializes scroll reveal after rendering.
+ * @param {Function} renderFn - The function that renders the new page content
+ */
 export function pageTransition(renderFn) {
   const app = document.getElementById('app');
   app.style.opacity = '0';
@@ -91,7 +115,12 @@ export function pageTransition(renderFn) {
   }, 150);
 }
 
-// Debounce utility
+/**
+ * Creates a debounced version of a function that delays invocation.
+ * @param {Function} fn - The function to debounce
+ * @param {number} [delay=300] - Delay in milliseconds
+ * @returns {Function} The debounced function
+ */
 export function debounce(fn, delay = 300) {
   let timer;
   return (...args) => {
@@ -100,13 +129,22 @@ export function debounce(fn, delay = 300) {
   };
 }
 
-// Format date
+/**
+ * Formats a date string into Indian locale format (e.g., "28 April 2026").
+ * @param {string} dateStr - A date string parseable by the Date constructor
+ * @returns {string} The formatted date string in en-IN locale
+ */
 export function formatDate(dateStr) {
   const d = new Date(dateStr);
   return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-// Format AI responses — convert markdown to clean HTML
+/**
+ * Converts markdown-formatted AI responses to styled HTML for display.
+ * Handles headers, bold, italic, links, tables, lists, and horizontal rules.
+ * @param {string} text - Raw markdown text from the AI response
+ * @returns {string} Formatted HTML string ready for DOM injection
+ */
 export function formatAIResponse(text) {
   if (!text) return '';
   let s = text;
@@ -121,7 +159,7 @@ export function formatAIResponse(text) {
   s = s.replace(/\*([^\*]+)\*/g, '<em>$1</em>');
   
   // Markdown links: [text](url) → <a>
-  s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" style="color:var(--saffron-400)">$1</a>');
+  s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:var(--saffron-400)">$1</a>');
   
   // Horizontal rule: ---
   s = s.replace(/^---$/gm, '<hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:12px 0">');

@@ -1,6 +1,10 @@
-// ============================================
-// VoteGuide AI — Quiz Engine & Leaderboard
-// ============================================
+/**
+ * @module Quiz
+ * @description VoteGuide AI — Gamified Election Quiz Engine & Firestore Leaderboard.
+ * Renders progressive quiz questions with instant feedback, explanation cards,
+ * badge awards (quiz_complete, quiz_master), and a cloud-synced leaderboard.
+ * @version 1.0.0
+ */
 
 import { db, collection, addDoc, getDocs, query, orderBy, limit } from './firebase-config.js';
 import { getCurrentUser } from './auth.js';
@@ -60,6 +64,12 @@ export function renderQuestion() {
   });
 }
 
+/**
+ * Handles the selection of a quiz option.
+ * Updates the score, highlights the correct/wrong answers, and shows the explanation.
+ * @param {number} selected - The index of the selected option
+ * @private
+ */
 function handleAnswer(selected) {
   if (answered) return;
   answered = true;
@@ -93,6 +103,12 @@ function handleAnswer(selected) {
   });
 }
 
+/**
+ * Displays the final quiz results and leaderboard.
+ * Unlocks badges based on performance and saves the score to Firestore.
+ * @async
+ * @private
+ */
 async function showResults() {
   const container = document.getElementById('quiz-area');
   const pct = Math.round((score / quizQuestions.length) * 100);
@@ -118,7 +134,7 @@ async function showResults() {
         pct: pct,
         timestamp: new Date().toISOString()
       });
-    } catch (e) { console.log('Leaderboard save error:', e); }
+    } catch (e) { console.warn('Leaderboard save error:', e); }
   }
 
   // Fetch leaderboard
@@ -142,7 +158,7 @@ async function showResults() {
           }).join('')}
         </div>`;
     }
-  } catch (e) { console.log('Leaderboard fetch error:', e); }
+  } catch (e) { console.warn('Leaderboard fetch error:', e); }
 
   container.innerHTML = `
     <div class="quiz-card">

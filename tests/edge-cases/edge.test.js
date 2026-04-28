@@ -8,6 +8,15 @@ const path = require('path');
 
 const PROJECT_ROOT = path.resolve(__dirname, '../..');
 
+/**
+ * Helper to simulate the frontend sanitize function for testing
+ */
+function sanitize(str) {
+  if (typeof str !== 'string') return '';
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
 describe('Edge Case Handling — AI Assistant', () => {
   let aiCode;
   beforeAll(() => {
@@ -48,13 +57,6 @@ describe('Edge Case Handling — AI Assistant', () => {
 });
 
 describe('Edge Case Handling — Input Validation', () => {
-  // Re-implement validation for Node testing
-  function sanitize(str) {
-    if (typeof str !== 'string') return '';
-    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-              .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-  }
-
   test('should handle extremely long input strings', () => {
     const longStr = 'a'.repeat(100000);
     const result = sanitize(longStr);
@@ -148,10 +150,12 @@ describe('Firebase Deployment Safety', () => {
     expect(rc.projects?.default).toBeDefined();
   });
 
-  test('Cloud Function should handle missing API keys gracefully', () => {
-    const fn = fs.readFileSync(path.join(PROJECT_ROOT, 'functions/index.js'), 'utf8');
-    // Should not crash if keys are empty — uses fallback pattern
-    expect(fn).toMatch(/process\.env|functions\.config/);
+  test('AI assistant should handle missing API keys gracefully', () => {
+    const ai = fs.readFileSync(path.join(PROJECT_ROOT, 'js/ai-assistant.js'), 'utf8');
+    // Should implement fallback chain if keys fail
+    expect(ai).toContain('tryMistral');
+    expect(ai).toContain('tryGemini');
+    expect(ai).toContain('getKBResponse');
   });
 });
 
@@ -191,5 +195,31 @@ describe('Knowledge Base Completeness', () => {
 
   test('should cover Model Code of Conduct', () => {
     expect(aiCode).toMatch(/model code|mcc|code of conduct/i);
+  });
+
+  test('should handle nested HTML sanitization correctly', () => {
+    const payload = '<div><p><script>alert(1)</script></p></div>';
+    const result = sanitize(payload);
+    expect(result).not.toContain('<script>');
+    expect(result).not.toContain('<div>');
+    expect(result).toContain('&lt;div&gt;&lt;p&gt;&lt;script&gt;');
+  });
+});
+
+describe('AI Usage Tracking Resilience', () => {
+  let aiCode;
+  beforeAll(() => {
+    aiCode = fs.readFileSync(path.join(PROJECT_ROOT, 'js/ai-assistant.js'), 'utf8');
+  });
+
+  test('should have a try-catch block for JSON.parse of localStorage', () => {
+    // This handles corrupted storage data
+    expect(aiCode).toMatch(/try\s*\{.*JSON\.parse.*\}\s*catch/);
+  });
+
+  test('should reset usage if date is stale or missing', () => {
+    // The code returns d only if date matches, else resets
+    expect(aiCode).toMatch(/d\?\.date\s*===\s*new\s*Date\(\)\.toDateString\(\)/);
+    expect(aiCode).toContain('resetUsage');
   });
 });
