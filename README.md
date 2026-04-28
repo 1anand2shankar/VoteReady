@@ -321,5 +321,3 @@ _(Note: Opening `index.html` directly via the `file://` protocol will result in 
   <i>© 2026 VoteGuide AI — Built for the Hack2Skill PromptWars Challenge</i><br>
   <b>Made with 🧡 for Indian Democracy</b>
 </div>
-
-Done
