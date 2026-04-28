@@ -1,6 +1,7 @@
 <div align="center">
 
 # 🗳️ VoteGuide AI
+
 **India's Smart Election Education & Voter Assistance Platform**
 
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](#)
@@ -12,7 +13,7 @@
 [![Tests](https://img.shields.io/badge/Tests-163_Passing-brightgreen?style=for-the-badge&logo=jest)](#)
 [![Coverage](https://img.shields.io/badge/Coverage-Security_|_Accessibility_|_Edge_Cases-blue?style=for-the-badge)](#)
 
-*Empowering citizens with AI-driven knowledge about the democratic process, voter registration, and electoral awareness.*
+_Empowering citizens with AI-driven knowledge about the democratic process, voter registration, and electoral awareness._
 
 <br />
 
@@ -24,16 +25,17 @@
 
 ## 🛑 The Problem Statement
 
-India is the world's largest democracy, yet navigating its electoral process remains a significant challenge for millions. 
+India is the world's largest democracy, yet navigating its electoral process remains a significant challenge for millions.
+
 1. **First-Time Voter Apathy:** Complex bureaucratic jargon and scattered information lead to confusion and lower youth voter turnout.
 2. **Misinformation:** Voters frequently fall prey to myths regarding EVMs, voting eligibility, and political processes.
 3. **Accessibility Barriers:** Critical election data is often buried in non-intuitive government portals lacking modern, multi-lingual, and mobile-friendly interfaces.
 
 ## 🌟 Why This Solution Matters (Real-World Impact)
 
-**VoteGuide AI** bridges the gap between the Election Commission's resources and the everyday citizen. By consolidating fragmented data into a single, intuitive platform powered by Artificial Intelligence, we reduce the friction of democratic participation. 
+**VoteGuide AI** bridges the gap between the Election Commission's resources and the everyday citizen. By consolidating fragmented data into a single, intuitive platform powered by Artificial Intelligence, we reduce the friction of democratic participation.
 
-When citizens are informed—when they know exactly *how*, *where*, and *why* to vote—democracy strengthens. This platform is designed to convert passive observers into active, educated voters.
+When citizens are informed—when they know exactly _how_, _where_, and _why_ to vote—democracy strengthens. This platform is designed to convert passive observers into active, educated voters.
 
 ---
 
@@ -41,14 +43,14 @@ When citizens are informed—when they know exactly *how*, *where*, and *why* to
 
 VoteGuide AI is an apolitical, highly interactive platform designed to educate and assist voters at every step of their democratic journey.
 
-| Feature | Description |
-| :--- | :--- |
-| **🤖 AI Assistant** | Powered by Gemini AI. Get instant, conversational, and accurate answers to any election-related queries in real-time. |
-| **🗺️ ECI Map & Booth Finder** | Locate your exact polling booth effortlessly using interactive map integrations. |
-| **🗳️ EVM Demo Simulator** | A virtual Electronic Voting Machine that demystifies the actual voting process inside the booth. |
-| **🧠 Gamified Election Quiz** | Tests civic knowledge and rewards users with achievement badges to encourage active learning. |
-| **📖 Structured Educational Modules** | Bite-sized, progressive guides on Voter Registration, the Parliament, the President, and First-Time Voting. |
-| **🌐 Multi-lingual Accessibility** | Built-in Google Translate integration instantly converts the platform into 12+ regional Indian languages. |
+| Feature                               | Description                                                                                                           |
+| :------------------------------------ | :-------------------------------------------------------------------------------------------------------------------- |
+| **🤖 AI Assistant**                   | Powered by Gemini AI. Get instant, conversational, and accurate answers to any election-related queries in real-time. |
+| **🗺️ ECI Map & Booth Finder**         | Locate your exact polling booth effortlessly using interactive map integrations.                                      |
+| **🗳️ EVM Demo Simulator**             | A virtual Electronic Voting Machine that demystifies the actual voting process inside the booth.                      |
+| **🧠 Gamified Election Quiz**         | Tests civic knowledge and rewards users with achievement badges to encourage active learning.                         |
+| **📖 Structured Educational Modules** | Bite-sized, progressive guides on Voter Registration, the Parliament, the President, and First-Time Voting.           |
+| **🌐 Multi-lingual Accessibility**    | Built-in Google Translate integration instantly converts the platform into 12+ regional Indian languages.             |
 
 ---
 
@@ -56,10 +58,10 @@ VoteGuide AI is an apolitical, highly interactive platform designed to educate a
 
 What makes VoteGuide AI stand out technically and experientially?
 
-* **Zero-Dependency SPA Routing:** We engineered a custom Vanilla JavaScript router. The app functions as a blazing-fast Single Page Application without the overhead or loading times of heavy frameworks like React or Angular.
-* **Immersive Visuals:** We integrated a custom `Three.js` WebGL particle background that reacts dynamically to the user's viewport, providing a premium, modern aesthetic rarely seen in civic tech.
-* **Absolute Mobile-First Responsiveness:** The platform features a bespoke slide-out mobile drawer, fluid grid typography, and intelligent layout collapsing to ensure a flawless experience on a $50 smartphone or a 4K monitor.
-* **Serverless AI Integration:** Our Gemini AI assistant operates securely via Firebase Cloud Functions, protecting API keys while delivering rapid, context-aware responses.
+- **Zero-Dependency SPA Routing:** We engineered a custom Vanilla JavaScript router. The app functions as a blazing-fast Single Page Application without the overhead or loading times of heavy frameworks like React or Angular.
+- **Immersive Visuals:** We integrated a custom `Three.js` WebGL particle background that reacts dynamically to the user's viewport, providing a premium, modern aesthetic rarely seen in civic tech.
+- **Absolute Mobile-First Responsiveness:** The platform features a bespoke slide-out mobile drawer, fluid grid typography, and intelligent layout collapsing to ensure a flawless experience on a $50 smartphone or a 4K monitor.
+- **Serverless AI Integration:** Our Gemini AI assistant operates securely via Firebase Cloud Functions, protecting API keys while delivering rapid, context-aware responses.
 
 ---
 
@@ -71,42 +73,42 @@ VoteGuide AI operates on a modern, decoupled serverless architecture:
 graph TD
     %% User Layer
     U((Citizen User)) -->|Interacts via Browser| Frontend
-    
+
     %% Frontend Layer
     subgraph "Frontend Layer (Client-Side SPA)"
         UI[Dynamic UI Components<br>HTML5, CSS Variables]
         ThreeJS[Immersive Visuals<br>Three.js WebGL]
         Router{Vanilla JS Router<br>Hash-based navigation}
-        
+
         UI --- Router
         UI --- ThreeJS
     end
-    
+
     %% Services & Backend
     Frontend -->|OAuth 2.0 Sign-In| FirebaseAuth[Firebase Authentication]
     Router -->|Dynamically Injects| LocalData[(Modular Page Assets)]
     Frontend -->|Secure POST Request| CloudFunction
-    
+
     %% Backend Layer
     subgraph "Backend Layer (Serverless)"
         CloudFunction[Firebase Cloud Function<br>Node.js API Proxy]
     end
-    
+
     %% External API Layer
     CloudFunction -->|REST API Call| GeminiAPI((Google Gemini AI API))
-    
+
     %% Styling
     classDef primary fill:#1a2744,stroke:#ff9933,stroke-width:2px,color:#fff;
     classDef secondary fill:#0a1628,stroke:#5a82b0,stroke-width:1px,color:#fff;
     classDef external fill:#138808,stroke:#fff,stroke-width:2px,color:#fff;
     classDef user fill:#e07a00,stroke:#fff,stroke-width:2px,color:#fff;
-    
+
     class UI,Router,ThreeJS,CloudFunction,LocalData primary;
     class FirebaseAuth,GeminiAPI external;
     class U user;
 ```
 
-1. **Frontend Layer:** Native HTML5, CSS3 (with extensive CSS Variables for theme management), and ES6 Modules. 
+1. **Frontend Layer:** Native HTML5, CSS3 (with extensive CSS Variables for theme management), and ES6 Modules.
 2. **State & Routing:** A custom JavaScript Engine intercepts URL hash changes (`#/route`) and dynamically injects HTML payloads into the DOM. This ensures instant page transitions.
 3. **Authentication:** Firebase Auth handles Google OAuth Sign-In. State listeners globally update the UI (navbars, drawers) to reflect user sessions.
 4. **Backend/AI Layer:** A Node.js Firebase HTTP Cloud Function acts as a secure proxy. When a user asks the AI Assistant a question, the frontend securely POSTs to the Cloud Function, which negotiates with the **Google Gemini API** and streams the response back.
@@ -121,42 +123,42 @@ VoteGuide AI operates on a modern, decoupled serverless architecture:
 graph TD
     %% User Layer
     U((Citizen User)) -->|Interacts via Browser| Frontend
-    
+
     %% Frontend Layer
     subgraph "Frontend Layer (Client-Side SPA)"
         UI[Dynamic UI Components<br>HTML5, CSS Variables]
         ThreeJS[Immersive Visuals<br>Three.js WebGL]
         Router{Vanilla JS Router<br>Hash-based navigation}
-        
+
         UI --- Router
         UI --- ThreeJS
     end
-    
+
     %% Services & Backend
     Frontend -->|OAuth 2.0 Sign-In| FirebaseAuth[Firebase Authentication]
     Router -->|Dynamically Injects| LocalData[(Modular Page Assets)]
     Frontend -->|Secure POST Request| CloudFunction
-    
+
     %% Backend Layer
     subgraph "Backend Layer (Serverless)"
         CloudFunction[Firebase Cloud Function<br>Node.js API Proxy]
     end
-    
+
     %% External API Layer
     CloudFunction -->|REST API Call| GeminiAPI((Google Gemini AI API))
-    
+
     %% Styling
     classDef primary fill:#1a2744,stroke:#ff9933,stroke-width:2px,color:#fff;
     classDef secondary fill:#0a1628,stroke:#5a82b0,stroke-width:1px,color:#fff;
     classDef external fill:#138808,stroke:#fff,stroke-width:2px,color:#fff;
     classDef user fill:#e07a00,stroke:#fff,stroke-width:2px,color:#fff;
-    
+
     class UI,Router,ThreeJS,CloudFunction,LocalData primary;
     class FirebaseAuth,GeminiAPI external;
     class U user;
 ```
 
-1. **Frontend Layer:** Native HTML5, CSS3 (with extensive CSS Variables for theme management), and ES6 Modules. 
+1. **Frontend Layer:** Native HTML5, CSS3 (with extensive CSS Variables for theme management), and ES6 Modules.
 2. **State & Routing:** A custom JavaScript Engine intercepts URL hash changes (`#/route`) and dynamically injects HTML payloads into the DOM. This ensures instant page transitions.
 3. **Authentication:** Firebase Auth handles Google OAuth Sign-In. State listeners globally update the UI (navbars, drawers) to reflect user sessions.
 4. **Backend/AI Layer:** A Node.js Firebase HTTP Cloud Function acts as a secure proxy. When a user asks the AI Assistant a question, the frontend securely POSTs to the Cloud Function, which negotiates with the **Google Gemini API** and streams the response back.
@@ -169,15 +171,18 @@ graph TD
   <summary><b>Vertical, Approach & Assumptions (Click to Expand)</b></summary>
   <br>
 
-  ### 🏛️ Chosen Vertical
-  **Civic Technology & Election Education**  
+### 🏛️ Chosen Vertical
 
-  ### 🧠 Approach and Logic
-  Our approach prioritizes **progressive disclosure**. Complex topics are hidden behind accordions, quizzes, and modal popups. This prevents cognitive overload, allowing users to consume heavy bureaucratic information at their own pace.
+**Civic Technology & Election Education**
 
-  ### 📌 Assumptions Made
-  * **Educational Scope:** The platform is strictly educational and apolitical. It does not replace official ECI portals but acts as a funnel directing educated users to them.
-  * **Modern Browser Capabilities:** We assume the user is on a browser that supports CSS Grid, Flexbox, and ES6 Modules, allowing us to omit heavy legacy polyfills.
+### 🧠 Approach and Logic
+
+Our approach prioritizes **progressive disclosure**. Complex topics are hidden behind accordions, quizzes, and modal popups. This prevents cognitive overload, allowing users to consume heavy bureaucratic information at their own pace.
+
+### 📌 Assumptions Made
+
+- **Educational Scope:** The platform is strictly educational and apolitical. It does not replace official ECI portals but acts as a funnel directing educated users to them.
+- **Modern Browser Capabilities:** We assume the user is on a browser that supports CSS Grid, Flexbox, and ES6 Modules, allowing us to omit heavy legacy polyfills.
 </details>
 
 ---
@@ -194,15 +199,15 @@ This project is **production-ready** and fully deployed using Firebase Hosting. 
 
 VoteGuide AI implements **defense-in-depth** security across every layer, achieving a near-perfect automated security score:
 
-| Layer | Protection | Implementation |
-|-------|-----------|----------------|
-| **HTTP Headers** | CSP, HSTS, X-Frame-Options, X-XSS-Protection | `firebase.json` security headers |
+| Layer                  | Protection                                                             | Implementation                          |
+| ---------------------- | ---------------------------------------------------------------------- | --------------------------------------- |
+| **HTTP Headers**       | CSP, HSTS, X-Frame-Options, X-XSS-Protection                           | `firebase.json` security headers        |
 | **API Key Protection** | Keys managed via environment variables (Cloud) & obfuscated (Frontend) | `functions/index.js`, `ai-assistant.js` |
-| **XSS Prevention** | All user inputs sanitized via `sanitize()` before DOM injection | `utils.js`, `auth.js` |
-| **Cloud Function** | CORS origin whitelist, input validation, 16KB payload limit | `functions/index.js` |
-| **Rate Limiting** | 15 req/min per IP on Cloud Function | In-memory rate limiter |
-| **Firestore Rules** | Deny-all default, authenticated writes with field validation | `firestore.rules` |
-| **Secret Management** | `.env` excluded via `.gitignore`, keys not in git history | `.gitignore` |
+| **XSS Prevention**     | All user inputs sanitized via `sanitize()` before DOM injection        | `utils.js`, `auth.js`                   |
+| **Cloud Function**     | CORS origin whitelist, input validation, 16KB payload limit            | `functions/index.js`                    |
+| **Rate Limiting**      | 15 req/min per IP on Cloud Function                                    | In-memory rate limiter                  |
+| **Firestore Rules**    | Deny-all default, authenticated writes with field validation           | `firestore.rules`                       |
+| **Secret Management**  | `.env` excluded via `.gitignore`, keys not in git history              | `.gitignore`                            |
 
 ---
 
@@ -220,13 +225,13 @@ npm run test:security    # API key exposure, CSP headers, Firestore rules
 npm run test:integration # Project structure, config, accessibility checks
 ```
 
-| Test Suite | Cases | Coverage |
-|-----------|-------|----------|
-| **Unit Tests** | 37 | XSS sanitization, input validation, error classification, key switching |
-| **Security Tests** | 28 | Key exposure audit, CSP verification, CORS checks, rate limiting |
-| **Integration Tests** | 38 | File structure, HTML semantics, Firebase config, module deps |
-| **Accessibility Tests**| 28 | WCAG 2.1 AA compliance, ARIA roles, focus management, screen readers |
-| **Edge Case Tests** | 32 | AI API failures, payload limits, script injection, offline states |
+| Test Suite              | Cases | Coverage                                                                |
+| ----------------------- | ----- | ----------------------------------------------------------------------- |
+| **Unit Tests**          | 37    | XSS sanitization, input validation, error classification, key switching |
+| **Security Tests**      | 28    | Key exposure audit, CSP verification, CORS checks, rate limiting        |
+| **Integration Tests**   | 38    | File structure, HTML semantics, Firebase config, module deps            |
+| **Accessibility Tests** | 28    | WCAG 2.1 AA compliance, ARIA roles, focus management, screen readers    |
+| **Edge Case Tests**     | 32    | AI API failures, payload limits, script injection, offline states       |
 
 📄 Full testing documentation: [`TESTING.md`](TESTING.md)
 
@@ -293,6 +298,7 @@ voteguide-ai/
 Want to run the code locally? You only need a modern browser and a local development server.
 
 ### Quick Start
+
 ```bash
 git clone https://github.com/asifkhan7060/Election-Process-Website.git
 cd Election-Process-Website
@@ -302,11 +308,12 @@ npm test           # Runs 99 test cases
 ```
 
 ### Using VS Code
+
 1. Open the folder in **Visual Studio Code**.
 2. Install the **[Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)** extension.
 3. Right-click `index.html` and select **"Open with Live Server"**.
 
-*(Note: Opening `index.html` directly via the `file://` protocol will result in CORS errors due to ES6 module imports).*
+_(Note: Opening `index.html` directly via the `file://` protocol will result in CORS errors due to ES6 module imports)._
 
 ---
 
@@ -314,3 +321,5 @@ npm test           # Runs 99 test cases
   <i>© 2026 VoteGuide AI — Built for the Hack2Skill PromptWars Challenge</i><br>
   <b>Made with 🧡 for Indian Democracy</b>
 </div>
+
+Done
