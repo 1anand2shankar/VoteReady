@@ -11,6 +11,7 @@
   display: flex;
   align-items: center;
   overflow: hidden;
+  overflow-x: clip;
   padding: var(--space-20) 0;
 }
 
@@ -1046,9 +1047,34 @@
 @media (max-width: 640px) {
   .hero { min-height: 80vh; padding: var(--space-12) 0; }
   .hero h1 { font-size: var(--text-3xl); }
+  .hero-content {
+    max-width: 100%;
+    padding: 0 var(--space-4);
+  }
   .hero-stats { grid-template-columns: 1fr; gap: var(--space-3); }
   .hero-buttons { flex-direction: column; align-items: stretch; }
   .hero-buttons .btn { width: 100%; }
+  /* Countdown widget mobile */
+  .countdown-widget {
+    width: 100% !important;
+    padding: 16px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .countdown-widget h4 {
+    font-size: 0.8rem !important;
+    letter-spacing: 1px !important;
+  }
+  #election-countdown {
+    gap: 10px !important;
+  }
+  #election-countdown > div > div:first-child {
+    font-size: 1.8rem !important;
+  }
+  #election-countdown > div[style*="2.5rem"] {
+    font-size: 1.8rem !important;
+  }
   .booth-finder-form { grid-template-columns: 1fr; }
   .why-vote-grid { grid-template-columns: 1fr; }
   .quiz-card { padding: var(--space-5); }

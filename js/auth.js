@@ -6,6 +6,21 @@
 import { auth, provider, signInWithPopup, signOut, onAuthStateChanged } from './firebase-config.js';
 import { showToast, sanitize } from './utils.js';
 
+// URL-safe sanitizer: validates without HTML-encoding (preserves & in query params)
+function sanitizeUrl(url) {
+  if (!url || typeof url !== 'string') return '';
+  try {
+    const parsed = new URL(url);
+    // Only allow https and data URIs
+    if (parsed.protocol === 'https:' || parsed.protocol === 'data:') return url;
+    return '';
+  } catch {
+    // Allow data URIs that may not parse as URL
+    if (url.startsWith('data:image/')) return url;
+    return '';
+  }
+}
+
 let currentUser = null;
 let authCallbacks = [];
 
@@ -50,7 +65,8 @@ function updateAuthUI(user) {
     const displayName = sanitize(user.displayName || 'User');
     const initial = displayName[0];
     const fallbackAvatar = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><rect fill=%22%231a2744%22 width=%2240%22 height=%2240%22/><text x=%2220%22 y=%2226%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22>${initial}</text></svg>`;
-    const avatarSrc = sanitize(user.photoURL || fallbackAvatar);
+    // Use sanitizeUrl for photoURL to preserve & in query params
+    const avatarSrc = sanitizeUrl(user.photoURL) || fallbackAvatar;
     const firstName = displayName.split(' ')[0];
     
     const desktopHtml = `
@@ -63,16 +79,27 @@ function updateAuthUI(user) {
       </div>`;
       
     const mobileAuthHtml = `
-      <a href="#/profile" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:white;">
-        <img src="${avatarSrc}" alt="${displayName}" style="width:40px;height:40px;border-radius:50%;border:2px solid var(--saffron-500)" referrerpolicy="no-referrer">
-        <div style="display:flex;flex-direction:column;">
-          <span style="font-weight:600;font-size:1rem">${displayName}</span>
-          <span style="font-size:0.8rem;color:var(--gray-400)">View Profile</span>
+      <a href="#/profile" class="drawer-profile-link">
+        <img src="${avatarSrc}" alt="${displayName}" class="drawer-profile-avatar" referrerpolicy="no-referrer">
+        <div class="drawer-profile-info">
+          <span class="drawer-profile-name">${displayName}</span>
+          <span class="drawer-profile-sub">View Profile →</span>
         </div>
       </a>`;
 
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const themeIcon = currentTheme === 'dark' ? '☀️' : '🌙';
+    const themeLabel = currentTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
+
     const mobileLogoutHtml = `
-      <button class="sign-out-btn" id="mobile-sign-out-btn" style="width:100%;padding:12px;font-size:1rem;background:rgba(220,38,38,0.15)">Sign Out</button>`;
+      <button class="drawer-action-btn drawer-theme-btn" id="mobile-theme-toggle">
+        <span class="drawer-action-icon">${themeIcon}</span>
+        <span>${themeLabel}</span>
+      </button>
+      <button class="drawer-action-btn drawer-logout-btn" id="mobile-sign-out-btn">
+        <span class="drawer-action-icon">🚪</span>
+        <span>Sign Out</span>
+      </button>`;
 
     if (authContainer) authContainer.innerHTML = desktopHtml;
     if (mobileAuth) mobileAuth.innerHTML = mobileAuthHtml;
@@ -80,6 +107,19 @@ function updateAuthUI(user) {
 
     document.getElementById('sign-out-btn')?.addEventListener('click', googleSignOut);
     document.getElementById('mobile-sign-out-btn')?.addEventListener('click', googleSignOut);
+    // Theme toggle in drawer
+    document.getElementById('mobile-theme-toggle')?.addEventListener('click', () => {
+      const curr = document.documentElement.getAttribute('data-theme');
+      const next = curr === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('vg-theme', next);
+      // Update button label/icon
+      const btn = document.getElementById('mobile-theme-toggle');
+      if (btn) {
+        btn.querySelector('.drawer-action-icon').textContent = next === 'dark' ? '☀️' : '🌙';
+        btn.querySelector('span:last-child').textContent = next === 'dark' ? 'Light Mode' : 'Dark Mode';
+      }
+    });
   } else {
     const desktopSignInHtml = `
       <button class="sign-in-btn" id="sign-in-btn">
@@ -88,17 +128,44 @@ function updateAuthUI(user) {
       </button>`;
 
     const mobileSignInHtml = `
-      <button class="sign-in-btn" id="mobile-sign-in-btn" style="width:100%;justify-content:center;padding:12px">
-        <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
-        Sign In
+      <a href="javascript:void(0)" class="drawer-profile-link drawer-signin-link" id="mobile-sign-in-btn">
+        <div class="drawer-signin-icon">
+          <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
+        </div>
+        <div class="drawer-profile-info">
+          <span class="drawer-profile-name">Sign In</span>
+          <span class="drawer-profile-sub">Sign in with Google</span>
+        </div>
+      </a>`;
+
+    // Theme toggle even when signed out
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const themeIcon = currentTheme === 'dark' ? '☀️' : '🌙';
+    const themeLabel = currentTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
+    const mobileLogoutHtml = `
+      <button class="drawer-action-btn drawer-theme-btn" id="mobile-theme-toggle">
+        <span class="drawer-action-icon">${themeIcon}</span>
+        <span>${themeLabel}</span>
       </button>`;
 
     if (authContainer) authContainer.innerHTML = desktopSignInHtml;
     if (mobileAuth) mobileAuth.innerHTML = mobileSignInHtml;
-    if (mobileLogout) mobileLogout.innerHTML = '';
+    if (mobileLogout) mobileLogout.innerHTML = mobileLogoutHtml;
 
     document.getElementById('sign-in-btn')?.addEventListener('click', googleSignIn);
     document.getElementById('mobile-sign-in-btn')?.addEventListener('click', googleSignIn);
+    // Theme toggle in drawer (signed out)
+    document.getElementById('mobile-theme-toggle')?.addEventListener('click', () => {
+      const curr = document.documentElement.getAttribute('data-theme');
+      const next = curr === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('vg-theme', next);
+      const btn = document.getElementById('mobile-theme-toggle');
+      if (btn) {
+        btn.querySelector('.drawer-action-icon').textContent = next === 'dark' ? '☀️' : '🌙';
+        btn.querySelector('span:last-child').textContent = next === 'dark' ? 'Light Mode' : 'Dark Mode';
+      }
+    });
   }
 }
 
@@ -121,7 +188,7 @@ export function renderProfile() {
   const profileEmail = sanitize(user.email || '');
   const initial = profileName[0];
   const fallbackAvatar = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%231a2744%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2265%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2248%22>${initial}</text></svg>`;
-  const avatarSrc = sanitize(user.photoURL || fallbackAvatar);
+  const avatarSrc = sanitizeUrl(user.photoURL) || fallbackAvatar;
   const createdAt = user.metadata?.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : 'N/A';
   const lastSignIn = user.metadata?.lastSignInTime ? new Date(user.metadata.lastSignInTime).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'N/A';
   

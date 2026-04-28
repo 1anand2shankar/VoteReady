@@ -676,6 +676,11 @@ body { top: 0 !important; }
     visibility: visible;
   }
 
+  /* Prevent horizontal scroll on mobile */
+  .main-content {
+    overflow-x: hidden;
+  }
+
   /* ── Left-Side Drawer ── */
   .nav-links-wrapper {
     position: fixed;
@@ -702,67 +707,163 @@ body { top: 0 !important; }
     transform: translateX(0);
   }
 
-  /* ── Drawer Header (Brand + Profile) ── */
+  /* Drawer Profile Link */
+  .drawer-profile-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: white;
+    padding: 14px 16px;
+    border-radius: var(--radius-xl);
+    background: linear-gradient(135deg, rgba(255, 153, 51, 0.08), rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all var(--transition-fast);
+  }
+
+  .drawer-profile-link:hover {
+    background: linear-gradient(135deg, rgba(255, 153, 51, 0.15), rgba(255, 255, 255, 0.06));
+    border-color: rgba(255, 153, 51, 0.2);
+  }
+
+  .drawer-profile-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-full);
+    border: 2px solid var(--saffron-500);
+    box-shadow: 0 0 12px rgba(255, 153, 51, 0.25);
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .drawer-signin-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .drawer-profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .drawer-profile-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .drawer-profile-sub {
+    font-size: 0.8rem;
+    color: var(--saffron-400);
+    font-weight: 500;
+  }
+
+  /* ── Drawer Header ── */
   .mobile-drawer-header {
     display: block;
-    padding: var(--space-5) var(--space-4) var(--space-4);
+    padding: var(--space-5) var(--space-4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     flex-shrink: 0;
   }
 
-  .drawer-top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--space-3);
-  }
-
-  .drawer-brand {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    font-family: var(--font-heading);
-    font-size: var(--text-lg);
-    font-weight: var(--font-bold);
-    color: var(--white);
-  }
-
-  .drawer-close-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: var(--radius-md);
-    background: rgba(255, 255, 255, 0.06);
-    color: var(--gray-400);
-    font-size: 16px;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-  }
-
-  .drawer-close-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--white);
-  }
-
-  /* ── Drawer Footer (Logout) ── */
+  /* ── Drawer Footer (Theme Toggle + Logout) ── */
   .mobile-drawer-footer {
-    display: block;
     flex-shrink: 0;
     padding: var(--space-4);
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     margin-top: auto;
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-2);
   }
   
-  .mobile-drawer-footer:has(> :empty) {
+  .mobile-drawer-footer:empty {
     display: none;
   }
 
-  /* Hide hamburger X icon when drawer is open (use drawer close btn instead) */
-  .nav-toggle.open {
-    visibility: hidden;
+  #mobile-logout-container {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-2);
+    width: 100%;
+  }
+
+  #mobile-logout-container:empty {
+    display: none;
+  }
+
+  /* Drawer Action Buttons */
+  .drawer-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    flex: 1;
+    padding: 12px 10px;
+    border-radius: var(--radius-lg);
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    font-family: var(--font-body);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border: 1px solid transparent;
+    text-align: center;
+  }
+
+  .drawer-action-icon {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .drawer-theme-btn {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--gray-300);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .drawer-theme-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+  }
+
+  .drawer-logout-btn {
+    background: rgba(220, 38, 38, 0.08);
+    color: #f87171;
+    border-color: rgba(220, 38, 38, 0.15);
+  }
+
+  .drawer-logout-btn:hover {
+    background: rgba(220, 38, 38, 0.15);
+    color: #fca5a5;
+  }
+
+  /* Keep hamburger visible and clickable above backdrop */
+  .nav-toggle {
+    position: relative;
+    z-index: calc(var(--z-nav) + 3);
+  }
+
+  .nav-toggle span {
+    background: #ffffff;
+  }
+
+  /* Hide navbar theme toggle on mobile — it's in the drawer */
+  #theme-toggle-btn {
+    display: none;
   }
 
   /* ── Nav Links vertical stacking ── */
