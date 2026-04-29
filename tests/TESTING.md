@@ -132,7 +132,7 @@ Tests verify the CSP header blocks:
 - [ ] Screen reader compatibility
 - [ ] Color contrast ratio ≥ 4.5:1
 - [ ] Focus indicators visible
-- [ ] ARIA labels on interactive elements
+- [ ] ARIA labels on interactive element
 
 ### Functional Testing
 
