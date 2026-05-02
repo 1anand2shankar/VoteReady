@@ -1,6 +1,6 @@
 /**
  * @module Utils
- * @description VoteGuide AI — Shared Utility Functions.
+ * @description VoteReady — Shared Utility Functions.
  * Provides HTML sanitization (XSS prevention), toast notifications, scroll animations,
  * page transitions, debouncing, date formatting, and AI response formatting.
  * @version 1.0.0

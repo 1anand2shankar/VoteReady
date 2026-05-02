@@ -1,6 +1,6 @@
 /**
  * @module Badges
- * @description VoteGuide AI — Achievement Badge & Gamification System.
+ * @description VoteReady — Achievement Badge & Gamification System.
  * Tracks user progress via localStorage, awards badges for milestones
  * (first visit, quiz completion, section exploration), and renders badge UI.
  * @version 1.0.0
@@ -10,7 +10,7 @@ import { showToast } from './utils.js';
 import { badges as badgeDefs } from './data.js';
 
 /** @constant {string} LocalStorage key for unlocked badge IDs */
-const STORAGE_KEY = 'voteguide_badges';
+const STORAGE_KEY = 'voteready_badges';
 
 /**
  * Retrieves the list of unlocked badge IDs from localStorage.
@@ -64,7 +64,7 @@ export function renderBadges() {
 }
 
 /** @constant {string} LocalStorage key for visited section tracking */
-const SECTIONS_KEY = 'voteguide_sections';
+const SECTIONS_KEY = 'voteready_sections';
 
 /**
  * Tracks a section visit for the 'Election Expert' badge milestone.

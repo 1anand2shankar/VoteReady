@@ -1,6 +1,6 @@
 /**
  * @module ThreeBackground
- * @description VoteGuide AI — Three.js WebGL Particle Background.
+ * @description VoteReady — Three.js WebGL Particle Background.
  * Creates an immersive 3D scene with Indian tricolor particles, democracy-themed
  * wireframe shapes (Ashoka Chakra ring, unity sphere), and mouse-reactive camera.
  * @version 1.0.0

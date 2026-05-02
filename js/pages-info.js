@@ -1,6 +1,6 @@
 /**
  * @module PagesInfo
- * @description VoteGuide AI — Informational Page Renderers.
+ * @description VoteReady — Informational Page Renderers.
  * Renders Parliament structure, States & UTs data table, President info, Election Updates,
  * First-Time Voter guide, Myths vs Facts, Official Links, Booth Finder, EVM Demo, and Badges.
  * @version 1.0.0

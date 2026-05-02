@@ -1,6 +1,6 @@
 {
-  "name": "VoteGuide AI — Smart Election Education",
-  "short_name": "VoteGuide",
+  "name": "VoteReady — Smart Election Education",
+  "short_name": "VoteReady",
   "description": "India's Smart Election Education & Voter Assistance Platform",
   "start_url": "/",
   "display": "standalone",

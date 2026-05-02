@@ -1,6 +1,6 @@
 /**
  * @module PagesFeatures
- * @description VoteGuide AI — Feature Page Renderers.
+ * @description VoteReady — Feature Page Renderers.
  * Renders the AI Chat Assistant with API status dashboard, Election Text Analyzer,
  * Multi-language Translator with text-to-speech, and Election Dates calendar.
  * @version 1.0.0
@@ -59,7 +59,7 @@ export function renderAIAssistant() {
           <div class="chat-box-header">
             <div class="chat-box-avatar">🤖</div>
             <div>
-              <strong style="color:var(--navy-800);font-size:var(--text-base)">VoteGuide AI</strong>
+              <strong style="color:var(--navy-800);font-size:var(--text-base)">VoteReady</strong>
               <div class="chat-box-status"><span class="chat-status-dot"></span> Online — English & Hindi</div>
             </div>
           </div>
@@ -68,7 +68,7 @@ export function renderAIAssistant() {
           <div class="chat-messages-area" id="chat-messages" role="log" aria-live="polite" aria-label="Chat messages">
             <div class="chat-bubble chat-bubble-ai">
               <div class="chat-bubble-avatar">🤖</div>
-              <div class="chat-bubble-content">🙏 Namaste! I'm VoteGuide AI, your election education assistant. Ask me anything about Indian elections, voter registration, EVMs, or the democratic process. I support <strong>English</strong> and <strong>Hindi</strong>!</div>
+              <div class="chat-bubble-content">🙏 Namaste! I'm VoteReady, your election education assistant. Ask me anything about Indian elections, voter registration, EVMs, or the democratic process. I support <strong>English</strong> and <strong>Hindi</strong>!</div>
             </div>
           </div>
 

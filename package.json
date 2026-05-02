@@ -1,7 +1,7 @@
 {
-  "name": "voteguide-ai",
+  "name": "vote-ready",
   "version": "1.0.0",
-  "description": "VoteGuide AI — India's Smart Election Education & Voter Assistance Platform",
+  "description": "VoteReady — India's Smart Election Education & Voter Assistance Platform",
   "main": "index.html",
   "scripts": {
     "start": "npx http-server . -p 5000 --cors -c-1",
@@ -14,7 +14,7 @@
     "deploy": "firebase deploy"
   },
   "keywords": ["election", "voter", "ai", "gemini", "firebase", "civic-tech"],
-  "author": "VoteGuide AI Team",
+  "author": "VoteReady Team",
   "license": "MIT",
   "devDependencies": {
     "jest": "^30.3.0"

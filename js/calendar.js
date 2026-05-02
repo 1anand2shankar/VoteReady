@@ -1,6 +1,6 @@
 /**
  * @module Calendar
- * @description VoteGuide AI — Google Calendar Integration.
+ * @description VoteReady — Google Calendar Integration.
  * Generates Google Calendar event URLs for election dates, enabling users
  * to add important democratic events directly to their Google Calendar.
  * @version 1.0.0
@@ -22,7 +22,7 @@ export function createCalendarUrl(title, description, dateStr) {
     action: 'TEMPLATE',
     text: title,
     dates: `${startDate}/${endDate}`,
-    details: description + '\n\nAdded via VoteGuide AI — India\'s Election Education Platform',
+    details: description + '\n\nAdded via VoteReady — India\'s Election Education Platform',
     sf: 'true'
   });
   

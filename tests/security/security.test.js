@@ -1,5 +1,5 @@
 /**
- * VoteGuide AI — Security Tests
+ * VoteReady — Security Tests
  * Validates security posture: key exposure, headers, input sanitization, file safety
  */
 

@@ -1,6 +1,6 @@
 /**
  * @module AppController
- * @description VoteGuide AI — Main Application Controller & SPA Entry Point.
+ * @description VoteReady — Main Application Controller & SPA Entry Point.
  * Bootstraps the router, lazy-loads feature modules, and manages global UI interactions
  * including mobile drawer navigation, theme toggling, and translation widget.
  * @version 1.0.0

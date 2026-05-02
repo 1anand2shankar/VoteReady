@@ -1,6 +1,6 @@
 /**
  * @module Router
- * @description VoteGuide AI — Custom Hash-Based SPA Router.
+ * @description VoteReady — Custom Hash-Based SPA Router.
  * Provides client-side routing without framework dependencies by intercepting
  * hashchange events and mapping URL hashes to page render handlers.
  * @version 1.0.0

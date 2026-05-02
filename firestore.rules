@@ -1,6 +1,6 @@
 rules_version = '2';
 
-// VoteGuide AI — Firestore Security Rules
+// VoteReady — Firestore Security Rules
 // Principle of least privilege: deny all by default, allow only what's needed.
 
 service cloud.firestore {

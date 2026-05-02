@@ -1,5 +1,5 @@
 /**
- * VoteGuide AI — Integration Tests
+ * VoteReady — Integration Tests
  * Validates project structure, file integrity, and configuration consistency
  */
 

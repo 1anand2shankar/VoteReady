@@ -1,5 +1,5 @@
 /**
- * VoteGuide AI — Edge Case & Performance Tests
+ * VoteReady — Edge Case & Performance Tests
  * Validates error handling, boundary conditions, and performance constraints
  */
 

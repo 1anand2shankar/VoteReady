@@ -1,6 +1,6 @@
 /**
  * @module Data
- * @description VoteGuide AI — Static Election Data Repository.
+ * @description VoteReady — Static Election Data Repository.
  * Contains all structured datasets: state/UT electoral information, quiz questions,
  * myths vs facts, voting steps, registration guides, election dates, official links,
  * badge definitions, Parliament/President information, and EVM demo candidates.
@@ -114,7 +114,7 @@ export const officialLinks = [
 ];
 
 export const badges = [
-  { id: "first_visit", icon: "🌟", title: "First-Time Visitor", desc: "Visited VoteGuide AI for the first time", condition: "visit" },
+  { id: "first_visit", icon: "🌟", title: "First-Time Visitor", desc: "Visited VoteReady for the first time", condition: "visit" },
   { id: "quiz_complete", icon: "🧠", title: "Democracy Learner", desc: "Completed the election awareness quiz", condition: "quiz" },
   { id: "quiz_master", icon: "🏆", title: "Quiz Master", desc: "Scored 80% or more in the quiz", condition: "quiz_high" },
   { id: "ai_chat", icon: "🤖", title: "AI Explorer", desc: "Asked 5+ questions to the AI assistant", condition: "chat" },

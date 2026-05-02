@@ -1,6 +1,6 @@
 /**
  * @module Quiz
- * @description VoteGuide AI — Gamified Election Quiz Engine & Firestore Leaderboard.
+ * @description VoteReady — Gamified Election Quiz Engine & Firestore Leaderboard.
  * Renders progressive quiz questions with instant feedback, explanation cards,
  * badge awards (quiz_complete, quiz_master), and a cloud-synced leaderboard.
  * @version 1.0.0

@@ -1,6 +1,6 @@
 /**
  * @module PagesHome
- * @description VoteGuide AI — Home & Core Page Renderers.
+ * @description VoteReady — Home & Core Page Renderers.
  * Renders the homepage hero with countdown, How to Vote guide, Voter Registration
  * steps, Quiz launcher, and ECI Map with polling booth finder.
  * @version 1.0.0

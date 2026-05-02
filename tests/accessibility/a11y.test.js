@@ -1,5 +1,5 @@
 /**
- * VoteGuide AI — Accessibility Tests
+ * VoteReady — Accessibility Tests
  * Validates WCAG 2.1 AA compliance: ARIA labels, landmarks, focus management,
  * semantic HTML, and screen reader compatibility
  */

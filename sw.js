@@ -1,4 +1,4 @@
-const CACHE_NAME = 'voteguide-ai-v10';
+const CACHE_NAME = 'vote-ready-v10';
 const ASSETS = [
   '/',
   '/index.html',

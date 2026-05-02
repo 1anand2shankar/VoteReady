@@ -1,6 +1,6 @@
 /**
  * @module FirebaseConfig
- * @description VoteGuide AI — Firebase SDK Initialization & Configuration.
+ * @description VoteReady — Firebase SDK Initialization & Configuration.
  * Centralizes Firebase app setup, authentication provider, Firestore database,
  * and Google Analytics. All Firebase modules re-exported for use across the app.
  * @version 1.0.0

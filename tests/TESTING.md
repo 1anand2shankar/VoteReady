@@ -1,8 +1,8 @@
-# 🧪 VoteGuide AI — Testing Documentation
+# 🧪 VoteReady — Testing Documentation
 
 ## Testing Strategy
 
-VoteGuide AI employs a **multi-layered testing approach** to ensure code quality, security, and reliability across all platform components.
+VoteReady employs a **multi-layered testing approach** to ensure code quality, security, and reliability across all platform components.
 
 ### Test Architecture
 

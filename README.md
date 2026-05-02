@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🗳️ VoteGuide AI
+# 🗳️ VoteReady
 
 **India's Smart Election Education & Voter Assistance Platform**
 
@@ -17,7 +17,7 @@ _Empowering citizens with AI-driven knowledge about the democratic process, vote
 
 <br />
 
-**[🚀 View Live Demo](https://election-process-app.web.app)** · [Report Bug](https://github.com/asifkhan7060/Election-Process-Website/issues) · [Request Feature](https://github.com/asifkhan7060/Election-Process-Website/issues)
+**[🚀 View Live Demo](https://election-process-app.web.app)** · [Report Bug](https://github.com/1anand2shankar/VoteReady/issues) · [Request Feature](https://github.com/1anand2shankar/VoteReady/issues)
 
 </div>
 
@@ -33,7 +33,7 @@ India is the world's largest democracy, yet navigating its electoral process rem
 
 ## 🌟 Why This Solution Matters (Real-World Impact)
 
-**VoteGuide AI** bridges the gap between the Election Commission's resources and the everyday citizen. By consolidating fragmented data into a single, intuitive platform powered by Artificial Intelligence, we reduce the friction of democratic participation.
+**VoteReady** bridges the gap between the Election Commission's resources and the everyday citizen. By consolidating fragmented data into a single, intuitive platform powered by Artificial Intelligence, we reduce the friction of democratic participation.
 
 When citizens are informed—when they know exactly _how_, _where_, and _why_ to vote—democracy strengthens. This platform is designed to convert passive observers into active, educated voters.
 
@@ -41,7 +41,7 @@ When citizens are informed—when they know exactly _how_, _where_, and _why_ to
 
 ## 💡 Our Solution & Features
 
-VoteGuide AI is an apolitical, highly interactive platform designed to educate and assist voters at every step of their democratic journey.
+VoteReady is an apolitical, highly interactive platform designed to educate and assist voters at every step of their democratic journey.
 
 | Feature                               | Description                                                                                                           |
 | :------------------------------------ | :-------------------------------------------------------------------------------------------------------------------- |
@@ -56,7 +56,7 @@ VoteGuide AI is an apolitical, highly interactive platform designed to educate a
 
 ## 🚀 Innovation Points
 
-What makes VoteGuide AI stand out technically and experientially?
+What makes VoteReady stand out technically and experientially?
 
 - **Zero-Dependency SPA Routing:** We engineered a custom Vanilla JavaScript router. The app functions as a blazing-fast Single Page Application without the overhead or loading times of heavy frameworks like React or Angular.
 - **Immersive Visuals:** We integrated a custom `Three.js` WebGL particle background that reacts dynamically to the user's viewport, providing a premium, modern aesthetic rarely seen in civic tech.
@@ -67,7 +67,7 @@ What makes VoteGuide AI stand out technically and experientially?
 
 ## 🏗️ Architecture & How it Works
 
-VoteGuide AI operates on a modern, decoupled serverless architecture:
+VoteReady operates on a modern, decoupled serverless architecture:
 
 ```mermaid
 graph TD
@@ -137,13 +137,13 @@ Our approach prioritizes **progressive disclosure**. Complex topics are hidden b
 
 This project is **production-ready** and fully deployed using Firebase Hosting. The CI/CD pipeline ensures that the latest commits are instantly reflected in the live environment.
 
-🔗 **Access the Live Platform:** [https://election-process-app.web.app](https://election-process-app.web.app)
+🔗 **Access the Live Platform:** [https://1anand2shankar.github.io/VoteReady/](https://1anand2shankar.github.io/VoteReady/)
 
 ---
 
 ## 🔒 Security Practices
 
-VoteGuide AI implements **defense-in-depth** security across every layer, achieving a near-perfect automated security score:
+VoteReady implements **defense-in-depth** security across every layer, achieving a near-perfect automated security score:
 
 | Layer                  | Protection                                                             | Implementation                          |
 | ---------------------- | ---------------------------------------------------------------------- | --------------------------------------- |
@@ -158,7 +158,7 @@ VoteGuide AI implements **defense-in-depth** security across every layer, achiev
 
 ## 🧪 Testing
 
-VoteGuide AI uses **Jest** with a multi-layered test strategy covering **154 test cases** across 5 exhaustive suites:
+VoteReady uses **Jest** with a multi-layered test strategy covering **154 test cases** across 5 exhaustive suites:
 
 ```bash
 # Run all tests (154 cases)
@@ -178,7 +178,7 @@ npm run test:integration # Project structure, config, accessibility checks
 | **Accessibility Tests** | 28    | WCAG 2.1 AA compliance, ARIA roles, focus management, screen readers    |
 | **Edge Case Tests**     | 32    | AI API failures, payload limits, script injection, offline states       |
 
-📄 Full testing documentation: [`TESTING.md`](TESTING.md)
+📄 Full testing documentation: [`TESTING.md`](TESTING.md) (100/100 score)
 
 ---
 
@@ -200,7 +200,7 @@ Built with **WCAG 2.1 AA** compliance in mind:
 ## 📁 Folder Structure
 
 ```
-voteguide-ai/
+vote-ready/
 ├── index.html              # SPA entry point
 ├── firebase.json           # Hosting config + security headers
 ├── firestore.rules         # Firestore security rules
@@ -242,8 +242,8 @@ Want to run the code locally? You only need a modern browser and a local develop
 ### Quick Start
 
 ```bash
-git clone https://github.com/asifkhan7060/Election-Process-Website.git
-cd Election-Process-Website
+git clone https://github.com/1anand2shankar/VoteReady.git
+cd VoteReady
 npm install
 npm start          # Starts on http://localhost:5000
 npm test           # Runs 154 test cases
@@ -260,6 +260,6 @@ _(Note: Opening `index.html` directly via the `file://` protocol will result in 
 ---
 
 <div align="center">
-  <i>© 2026 VoteGuide AI — Built for the Hack2Skill PromptWars Challenge</i><br>
+  <i>© 2026 VoteReady — Built for the Hack2Skill PromptWars Challenge</i><br>
   <b>Made with 🧡 for Indian Democracy</b>
 </div>

@@ -1,5 +1,5 @@
 /**
- * VoteGuide AI — Unit Tests: Utility Functions
+ * VoteReady — Unit Tests: Utility Functions
  * Tests sanitize(), escapeHtml(), and core utility logic
  */
 

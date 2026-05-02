@@ -1,6 +1,6 @@
 /**
  * @module Auth
- * @description VoteGuide AI — Firebase Authentication & User Profile Management.
+ * @description VoteReady — Firebase Authentication & User Profile Management.
  * Handles Google OAuth sign-in/sign-out, auth state synchronization, profile rendering,
  * and mobile drawer UI updates. Uses URL-safe sanitization for Google profile image URLs.
  * @version 1.0.0
@@ -223,9 +223,9 @@ export function renderProfile() {
   
   // Get badges
   let unlockedBadges = [];
-  try { unlockedBadges = JSON.parse(localStorage.getItem('voteguide_badges')) || []; } catch {}
+  try { unlockedBadges = JSON.parse(localStorage.getItem('voteready_badges')) || []; } catch {}
   let sectionsVisited = [];
-  try { sectionsVisited = JSON.parse(localStorage.getItem('voteguide_sections')) || []; } catch {}
+  try { sectionsVisited = JSON.parse(localStorage.getItem('voteready_sections')) || []; } catch {}
 
   // Calculate Voter Readiness Score
   const explorationScore = Math.min(50, Math.round((sectionsVisited.length / 19) * 50));
@@ -374,12 +374,12 @@ export function initProfile() {
       const scoreText = document.querySelector('#share-score-btn').parentElement.querySelector('span[style*="3.5rem"]').textContent;
       if (navigator.share) {
         await navigator.share({
-          title: 'VoteGuide AI Readiness Score',
-          text: `I scored ${scoreText}/100 on my Voter Readiness Score on VoteGuide AI! 🇮🇳 Join me in becoming an informed voter.`,
+          title: 'VoteReady Readiness Score',
+          text: `I scored ${scoreText}/100 on my Voter Readiness Score on VoteReady! 🇮🇳 Join me in becoming an informed voter.`,
           url: window.location.origin
         });
       } else {
-        navigator.clipboard.writeText(`I scored ${scoreText}/100 on my Voter Readiness Score on VoteGuide AI! 🇮🇳 Join me in becoming an informed voter at ${window.location.origin}`);
+        navigator.clipboard.writeText(`I scored ${scoreText}/100 on my Voter Readiness Score on VoteReady! 🇮🇳 Join me in becoming an informed voter at ${window.location.origin}`);
         import('./utils.js').then(m => m.showToast('Score copied to clipboard!', 'success'));
       }
     } catch (err) {
